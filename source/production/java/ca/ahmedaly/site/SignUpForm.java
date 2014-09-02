@@ -4,8 +4,6 @@ import java.io.Serializable;
 
 import javax.validation.constraints.Size;
 
-import org.hibernate.validator.constraints.NotEmpty;
-
 //@PasswordsNotEmpty(
 //        passwordFieldName = "password",
 //        passwordVerificationFieldName = "passwordVerification"
@@ -21,15 +19,14 @@ public class SignUpForm implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@NotEmpty
+
 	@Size(min = 2, max = 30)
 	private String username;
 	
-	@NotEmpty
+
 	@Size(max = 100)
 	private String firstName;
-	
-	@NotEmpty
+
 	@Size(max = 100)
 	private String lastName;
 	

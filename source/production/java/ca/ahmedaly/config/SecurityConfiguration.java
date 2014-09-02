@@ -101,8 +101,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
                                 ("POST".equals(m) || "PUT".equals(m) ||
                                         "DELETE".equals(m) || "PATCH".equals(m));
                     })
-                .and()
-                	.apply(new SpringSocialConfigurer());
+                .and();
     }
     
     @Bean

@@ -1,5 +1,4 @@
 <spring:message code="title.social.status" var="socialStatus" />
-
 <template:basic htmlTitle="${socialStatus}" bodyTitle="${socialStatus}">
 	<h3>Your Connections</h3>
 
@@ -10,7 +9,7 @@
 		</c:forEach>
 
 
-		<div id="content" layout:fragment="content">
+		<div id="content">
 			<h3>Your Connections</h3>
 
 			<div class="accountConnection" th:each="providerId : ${providerIds}">

@@ -10,12 +10,22 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title><spring:message code="title.customer.support" /> ::
+        <title><spring:message code="title.customer.support" />
             <c:out value="${fn:trim(htmlTitle)}" /></title>
-        <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/css/bootstrap.min.css" />
-        <link rel="stylesheet" href="<c:url value="/resource/stylesheet/main.css" />" />
-        <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-        <script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.0.0/moment.min.js"></script>
+        <link href="<c:url value="/resource/plugins/bootstrap/bootstrap.css" /> " rel="stylesheet">
+        <link href="<c:url value="/resource/plugins/jquery-ui/jquery-ui.min.css" /> " rel="stylesheet">
+
+
+        <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+        <link href='http://fonts.googleapis.com/css?family=Righteous' rel='stylesheet' type='text/css'>
+
+
+        <link href="<c:url value="/resource/plugins/fancybox/jquery.fancybox.css" />" rel="stylesheet">
+        <link href="<c:url value="/resource/plugins/fullcalendar/fullcalendar.css" />" rel="stylesheet">
+        <link href="<c:url value="/resource/plugins/xcharts/xcharts.min.css" />" rel="stylesheet">
+        <link href="<c:url value="/resource/plugins/select2/select2.css" />" rel="stylesheet">
+        <link href="<c:url value="/resource/css/style.css" />" rel="stylesheet">
+
         <script type="text/javascript" lang="javascript">
             var postInvisibleForm = function(url, fields) {
                 var form = $('<form id="mapForm" method="post"></form>')
@@ -37,18 +47,25 @@
     </head>
     <body>
         <h1><spring:message code="title.company" /></h1>
-        <table border="0" id="bodyTable">
-            <tbody>
-                <tr>
-                    <td class="sidebarCell">
-                        <jsp:invoke fragment="navigationContent" />
-                    </td>
-                    <td class="contentCell">
-                        <h2><c:out value="${fn:trim(bodyTitle)}" /></h2>
-                        <jsp:doBody />
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <!-- HEADER -->
+
+        <div id="main" class="container-fluid">
+                <jsp:doBody />
+        </div>
     </body>
+    <!--End Container-->
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <!--<script src="http://code.jquery.com/jquery.js"></script>-->
+    <script src="<c:url value="/resource/plugins/jquery/jquery-2.1.0.min.js" />"></script>
+    <script src="<c:url value="/resource/plugins/jquery-ui/jquery-ui.min.js" />"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="<c:url value="/resource/plugins/bootstrap/bootstrap.min.js" />"></script>
+
+
+    <script src="<c:url value="/resource/plugins/justified-gallery/jquery.justifiedgallery.min.js" />"></script>
+    <script src="<c:url value="/resource/plugins/tinymce/tinymce.min.js" />"></script>
+    <script src="<c:url value="/resource/plugins/tinymce/jquery.tinymce.min.js" />"></script>
+
+    <!-- All functions for this theme + document.ready processing -->
+
 </html>

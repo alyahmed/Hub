@@ -4,7 +4,7 @@
         <wb-resource deploy-path="/" source-path="/web" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/source/production/java"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/source/production/resources"/>
-        <property name="context-root" value="customer-support"/>
         <property name="java-output-path" value="/customer-support/target/classes"/>
+        <property name="context-root" value="HubSocial"/>
     </wb-module>
 </project-modules>

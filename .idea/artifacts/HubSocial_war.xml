@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="HubSocial:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="HubSocial-20.0.0-SNAPSHOT.war">
+      <element id="artifact" artifact-name="HubSocial:war exploded" />
+    </root>
+  </artifact>
+</component>

@@ -12,6 +12,6 @@ public class IndexController
     @RequestMapping("/")
     public View index()
     {
-        return new RedirectView("/home/dashboard", true, false);
+        return new RedirectView("/connect", true, false);
     }
 }
