@@ -29,7 +29,7 @@ public class HomeController {
 
 	@RequestMapping(value = { "", "dashboard" }, method = RequestMethod.GET)
 	public String showDashboard(Model model) {
-
+		
 		log.debug("GET /home/dashboard - Displaying Home dashboard");
 		log.debug("Attaching Social media API bindings");
 		model.addAttribute("friends", twitter.friendOperations().getFriends());
