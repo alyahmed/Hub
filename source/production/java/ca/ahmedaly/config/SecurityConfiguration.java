@@ -100,8 +100,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
                         return !r.getServletPath().startsWith("/services/") &&
                                 ("POST".equals(m) || "PUT".equals(m) ||
                                         "DELETE".equals(m) || "PATCH".equals(m));
-                    })
-                .and();
+                    });
     }
     
     @Bean

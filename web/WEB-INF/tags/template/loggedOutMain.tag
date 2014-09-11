@@ -8,7 +8,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title><spring:message code="title.customer.support" /> <c:out
+<title><spring:message code="title.application" /> <c:out
 		value="${fn:trim(htmlTitle)}" /></title>
 <!-- Bootstrap core CSS -->
 <link href="<c:url value="/resource/css/bootstrap.min.css" /> "

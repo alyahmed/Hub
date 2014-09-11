@@ -21,10 +21,10 @@ public class HomeController {
 	Twitter twitter;
 	Facebook facebook;
 
-	@Autowired
-	public HomeController(Twitter twitter, Facebook facebook) {
-		this.twitter = twitter;
-		this.facebook = facebook;
+	//@Autowired
+	public HomeController() {
+//		this.twitter = twitter;
+//		this.facebook = facebook;
 	}
 
 	@RequestMapping(value = { "", "dashboard" }, method = RequestMethod.GET)
@@ -32,11 +32,11 @@ public class HomeController {
 		
 		log.debug("GET /home/dashboard - Displaying Home dashboard");
 		log.debug("Attaching Social media API bindings");
-		model.addAttribute("friends", twitter.friendOperations().getFriends());
-		model.addAttribute("followers", twitter.friendOperations()
-				.getFollowers());
-		model.addAttribute("timeline", twitter.timelineOperations()
-				.getHomeTimeline());
+//		model.addAttribute("friends", twitter.friendOperations().getFriends());
+//		model.addAttribute("followers", twitter.friendOperations()
+//				.getFollowers());
+//		model.addAttribute("timeline", twitter.timelineOperations()
+//				.getHomeTimeline());
 		return "home/dashboard";
 	}
 
