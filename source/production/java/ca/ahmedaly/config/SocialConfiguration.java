@@ -18,19 +18,19 @@ import org.springframework.social.connect.ConnectionFactoryLocator;
 import org.springframework.social.connect.ConnectionRepository;
 import org.springframework.social.connect.UsersConnectionRepository;
 import org.springframework.social.connect.jdbc.JdbcUsersConnectionRepository;
-import org.springframework.social.connect.web.ConnectController;
-import org.springframework.social.connect.web.DisconnectInterceptor;
 import org.springframework.social.connect.web.ReconnectFilter;
 import org.springframework.social.facebook.api.Facebook;
 import org.springframework.social.facebook.connect.FacebookConnectionFactory;
 import org.springframework.social.security.AuthenticationNameUserIdSource;
 import org.springframework.social.twitter.api.Twitter;
 import org.springframework.social.twitter.connect.TwitterConnectionFactory;
-import org.springframework.web.filter.HiddenHttpMethodFilter;
 
 import ca.ahmedaly.site.social.SocialConnectController;
 import ca.ahmedaly.site.social.facebook.PostToWallAfterConnectInterceptor;
 import ca.ahmedaly.site.social.twitter.TweetAfterConnectInterceptor;
+import org.springframework.social.connect.web.ConnectController;
+import org.springframework.social.linkedin.api.LinkedIn;
+import org.springframework.social.linkedin.connect.LinkedInConnectionFactory;
 
 @Configuration
 @EnableSocial
@@ -55,7 +55,9 @@ public class SocialConfiguration implements SocialConfigurer {
 	private final String FACEBOOK_APP_ID = "355447197940054";
 	private final String FACEBOOK_APP_SECRET = "66c8771a4d491b0714e3422215bb9a70";
 	
-	
+	private final String LINKEDIN_APP_KEY = "77eroyg7yrjq22";
+        private final String LINKEDIN_APP_SECRET = "OfTYGuRZXFplowCN";
+        
 	
 
 	@Override
@@ -65,6 +67,7 @@ public class SocialConfiguration implements SocialConfigurer {
 				TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET));
 		cfConfig.addConnectionFactory(new FacebookConnectionFactory(
 				FACEBOOK_APP_ID, FACEBOOK_APP_SECRET));
+                cfConfig.addConnectionFactory(new LinkedInConnectionFactory(LINKEDIN_APP_KEY, LINKEDIN_APP_SECRET));
 	}
 
 	@Override
@@ -109,8 +112,6 @@ public class SocialConfiguration implements SocialConfigurer {
 		return new ReconnectFilter(usersConnectionRepository, userIdSource);
 	}
 	
-	
-
 	//
 	// API Binding Beans
 	//
@@ -131,5 +132,10 @@ public class SocialConfiguration implements SocialConfigurer {
 		return connection != null ? connection.getApi() : null;
 	}
 	
-	
+	@Bean
+        @Scope(value = "request", proxyMode = ScopedProxyMode.INTERFACES)
+        public LinkedIn linkedIn(ConnectionRepository repository){
+            Connection<LinkedIn> connection = repository.findPrimaryConnection(LinkedIn.class);
+            return connection != null ? connection.getApi() : null;
+        }
 }

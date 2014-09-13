@@ -9,7 +9,7 @@
 			<ul class="albums">
 				<c:forEach items="${albums}" var="album">
 					ALBUM: 
-					<a href="${'/facebook/album/' + ${album.id}}"> ${album.name} </a>
+					<a href="${'/facebook/album/'} + ${album.id}"> ${album.name} </a>
 					
 				</c:forEach>
 			

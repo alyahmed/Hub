@@ -1,6 +1,6 @@
 <spring:message code="title.twitter.connect" var="twitterConnectTitle" />
 <template:basic htmlTitle="${twitterConnectTitle}" bodyTitle="${twitterConnectTitle}">
-	<div id="content" layout:fragment="content">
+	<div id="content">
 		<h3>Connect to Twitter</h3>
 		<c:url value="/connect/twitter" var="connectTwitterUrl" />
 

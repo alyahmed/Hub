@@ -37,7 +37,7 @@ public class SignUpController {
 	}
 
 
-	@RequestMapping(value = {"/signup", "/user/register" }, method = RequestMethod.GET)
+	@RequestMapping(value = {"/signup"}, method = RequestMethod.GET)
 	public ModelAndView showSignUpForm(WebRequest request, Map<String, Object> model){
 		
 		log.info("GET /signup ----------- Placing new SignUpForm Object in model");
@@ -50,7 +50,7 @@ public class SignUpController {
 	}
 	
 	
-	@RequestMapping(value = {"/signup", "/user/register"}, method = RequestMethod.POST)
+	@RequestMapping(value = {"/signup"}, method = RequestMethod.POST)
 	public ModelAndView registerUser(@Valid @ModelAttribute("signUpForm") SignUpForm signUpForm,
 									BindingResult result,
 									WebRequest request){

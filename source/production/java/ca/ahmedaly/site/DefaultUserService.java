@@ -54,7 +54,10 @@ public class DefaultUserService implements UserService
                     BCrypt.hashpw(newPassword, salt).getBytes()
             );
         }
-
         this.userRepository.save(principal);
     }
+
+    
+    
+    
 }

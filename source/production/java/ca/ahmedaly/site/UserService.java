@@ -19,4 +19,6 @@ public interface UserService extends UserDetailsService
                 UserPrincipal principal,
             String newPassword
     );
+    
+    
 }
