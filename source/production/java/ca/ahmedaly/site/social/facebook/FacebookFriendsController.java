@@ -23,23 +23,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import ca.ahmedaly.config.annotation.WebController;
+import org.springframework.social.connect.Connection;
+import org.springframework.social.connect.ConnectionRepository;
 
 @WebController
 public class FacebookFriendsController {
 
-	private final Facebook facebook;
+    @Inject
+    private ConnectionRepository connectionRepository;
 
-	@Inject
-	public FacebookFriendsController(Facebook facebook) {
-		this.facebook = facebook;
-	}
+    @RequestMapping(value = "/facebook/friends", method = RequestMethod.GET)
+    public String showFeed(Model model) {
+        Connection<Facebook> connection = connectionRepository.findPrimaryConnection(Facebook.class);
+        model.addAttribute("friends", connection.getApi().friendOperations().getFriends());
 
-	@RequestMapping(value="/facebook/friends", method=RequestMethod.GET)
-	public String showFeed(Model model) {
-		model.addAttribute("friends", facebook.friendOperations().getFriendProfiles());
-		model.addAttribute("friendIds", facebook.friendOperations().getFriendIds());
+        return "facebook/friends";
+    }
 
-		return "facebook/friends";
-	}
-	
 }

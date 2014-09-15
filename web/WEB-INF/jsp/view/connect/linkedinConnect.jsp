@@ -3,7 +3,6 @@
 <template:basic htmlTitle="${linkedinConnected}"
                 bodyTitle="${linkedinConnected}">
     <div id="content">
-        <h3>Connect to Linkedin</h3>
         <c:url value="/connect/linkedin" var="connectLinkedinUrl" />
 
         <form:form action="${connectLinkedinUrl}" method="POST">

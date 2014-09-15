@@ -23,27 +23,27 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import ca.ahmedaly.config.annotation.WebController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.social.connect.Connection;
+import org.springframework.social.connect.ConnectionRepository;
 
 @WebController
 public class FacebookFeedController {
 
-	private final Facebook facebook;
+    @Autowired
+    private ConnectionRepository connectionRepository;
 
-	@Inject
-	public FacebookFeedController(Facebook facebook) {
-		this.facebook = facebook;
-	}
+    @RequestMapping(value = "/facebook/feed", method = RequestMethod.GET)
+    public String showFeed(Model model) {
+        Connection<Facebook> connection = connectionRepository.findPrimaryConnection(Facebook.class);
+        model.addAttribute("feed", connection.getApi().feedOperations().getFeed());
+        model.addAttribute("api", connection.getApi());
+        return "facebook/feed";
+    }
 
-	@RequestMapping(value="/facebook/feed", method=RequestMethod.GET)
-	public String showFeed(Model model) {
-		model.addAttribute("feed", facebook.feedOperations().getFeed());
-		return "facebook/feed";
-	}
-	
-	@RequestMapping(value="/facebook/feed", method=RequestMethod.POST)
-	public String postUpdate(String message) {
-		facebook.feedOperations().updateStatus(message);
-		return "redirect:/facebook/feed";
-	}
-	
+    @RequestMapping(value = "/facebook/feed", method = RequestMethod.POST)
+    public String postUpdate(String message) {
+        return "redirect:/facebook/feed";
+    }
+
 }

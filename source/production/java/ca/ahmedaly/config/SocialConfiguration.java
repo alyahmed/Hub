@@ -21,14 +21,16 @@ import org.springframework.social.connect.jdbc.JdbcUsersConnectionRepository;
 import org.springframework.social.connect.web.ReconnectFilter;
 import org.springframework.social.facebook.api.Facebook;
 import org.springframework.social.facebook.connect.FacebookConnectionFactory;
-import org.springframework.social.security.AuthenticationNameUserIdSource;
 import org.springframework.social.twitter.api.Twitter;
 import org.springframework.social.twitter.connect.TwitterConnectionFactory;
-
 import ca.ahmedaly.site.social.SocialConnectController;
 import ca.ahmedaly.site.social.facebook.PostToWallAfterConnectInterceptor;
 import ca.ahmedaly.site.social.twitter.TweetAfterConnectInterceptor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.social.connect.web.ConnectController;
+import org.springframework.social.google.api.Google;
+import org.springframework.social.google.connect.GoogleConnectionFactory;
 import org.springframework.social.linkedin.api.LinkedIn;
 import org.springframework.social.linkedin.connect.LinkedInConnectionFactory;
 
@@ -36,106 +38,125 @@ import org.springframework.social.linkedin.connect.LinkedInConnectionFactory;
 @EnableSocial
 public class SocialConfiguration implements SocialConfigurer {
 
-	@Inject
-	private DataSource dataSource;
+    @Inject
+    private DataSource dataSource;
 
-	/*
-	 * Social Configurer implementation methods
-	 * 
-	 * @see org.springframework.social.config.annotation.SocialConfigurer#
-	 * addConnectionFactories
-	 * (org.springframework.social.config.annotation.ConnectionFactoryConfigurer
-	 * , org.springframework.core.env.Environment)
-	 */
-	
-	//Social Media API keys
-	private final String TWITTER_CONSUMER_KEY = "VtVh1EEoqYhHdau1bcpwNV4l5";
-	private final String TWITTER_CONSUMER_SECRET = "LpAhCggISjXZrQUviS0ntOXzYym087IThp4uVO78HXOmQia0PU";
-	
-	private final String FACEBOOK_APP_ID = "355447197940054";
-	private final String FACEBOOK_APP_SECRET = "66c8771a4d491b0714e3422215bb9a70";
-	
-	private final String LINKEDIN_APP_KEY = "77eroyg7yrjq22";
-        private final String LINKEDIN_APP_SECRET = "OfTYGuRZXFplowCN";
-        
-	
+    /*
+     * Social Configurer implementation methods
+     * 
+     * @see org.springframework.social.config.annotation.SocialConfigurer#
+     * addConnectionFactories
+     * (org.springframework.social.config.annotation.ConnectionFactoryConfigurer
+     * , org.springframework.core.env.Environment)
+     */
+    //Social Media API keys
+    private final String TWITTER_CONSUMER_KEY = "VtVh1EEoqYhHdau1bcpwNV4l5";
+    private final String TWITTER_CONSUMER_SECRET = "LpAhCggISjXZrQUviS0ntOXzYym087IThp4uVO78HXOmQia0PU";
 
-	@Override
-	public void addConnectionFactories(ConnectionFactoryConfigurer cfConfig,
-			Environment env) {
-		cfConfig.addConnectionFactory(new TwitterConnectionFactory(
-				TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET));
-		cfConfig.addConnectionFactory(new FacebookConnectionFactory(
-				FACEBOOK_APP_ID, FACEBOOK_APP_SECRET));
-                cfConfig.addConnectionFactory(new LinkedInConnectionFactory(LINKEDIN_APP_KEY, LINKEDIN_APP_SECRET));
-	}
+    private final String FACEBOOK_APP_ID = "346118278872946";
+    private final String FACBOOK_APP_SECRET = "3a9f1899f2bb25b36db28317e07dcabf";
 
-	@Override
-	public UserIdSource getUserIdSource() {
-		return new AuthenticationNameUserIdSource();
-	}
+    private final String LINKEDIN_APP_KEY = "77eroyg7yrjq22";
+    private final String LINKEDIN_APP_SECRET = "OfTYGuRZXFplowCN";
 
-	@Override
-	public UsersConnectionRepository getUsersConnectionRepository(
-			ConnectionFactoryLocator connectionFactoryLocator) {
-		return new JdbcUsersConnectionRepository(dataSource,
-				connectionFactoryLocator, Encryptors.noOpText());
-	}
+    private final String GOOGLE_CONSUMER_KEY = "1011116789942-adunbpm54fqt2iqo1ts7mrtsv447s2qm.apps.googleusercontent.com";
+    private final String GOOGLE_CONSUMER_SECRET = "X6HQpJ8q7LG2NkEJYytrzdJz";
+    
+    private final String GOOGLE_SCOPE = "profile email https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/tasks"; //MUST be seperated by spaces only!
+    private final String GOOGLE_RESPONSE_TYPE = "code"; //DEFAULT
+    
+    @Override
+    public void addConnectionFactories(ConnectionFactoryConfigurer cfConfig,
+            Environment env) {
+        cfConfig.addConnectionFactory(new TwitterConnectionFactory(
+                TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET));
+        cfConfig.addConnectionFactory(new FacebookConnectionFactory(
+                FACEBOOK_APP_ID, FACBOOK_APP_SECRET));
+        cfConfig.addConnectionFactory(new LinkedInConnectionFactory(LINKEDIN_APP_KEY, LINKEDIN_APP_SECRET));
+        GoogleConnectionFactory gcf = new GoogleConnectionFactory(GOOGLE_CONSUMER_KEY, GOOGLE_CONSUMER_SECRET);
+        gcf.setScope(GOOGLE_SCOPE);
+        cfConfig.addConnectionFactory(gcf);
+    }
+    @Override
+    public UsersConnectionRepository getUsersConnectionRepository(
+            ConnectionFactoryLocator connectionFactoryLocator) {
+        return new JdbcUsersConnectionRepository(dataSource,
+                connectionFactoryLocator, Encryptors.noOpText());
+    }
+
+    @Override
+    public UserIdSource getUserIdSource() {
+        return new UserIdSource() {			
+			@Override
+			public String getUserId() {
+				Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+				if (authentication == null) {
+					throw new IllegalStateException("Unable to get a ConnectionRepository: no user signed in");
+				}
+				return authentication.getName();
+			}
+		};
+    }
 
 
+    /*
+     * Web Controller and Filter beans
+     * 
+     * Controller offers status view at /connect/status. Must implement own view
+     * 
+     * Filters handle connection to service providers and reconnection incase
+     * token expires
+     */
+    @Bean
+    public ConnectController connectController(
+            ConnectionFactoryLocator connectionFactoryLocator,
+            ConnectionRepository connectionRepository) {
 
-	/*
-	 * Web Controller and Filter beans
-	 * 
-	 * Controller offers status view at /connect/status. Must implement own view
-	 * 
-	 * Filters handle connection to service providers and reconnection incase
-	 * token expires
-	 */
-	@Bean
-	public ConnectController connectController(
-			ConnectionFactoryLocator connectionFactoryLocator,
-			ConnectionRepository connectionRepository) {
-		
-		SocialConnectController controller = new SocialConnectController(connectionFactoryLocator, connectionRepository);
+        SocialConnectController controller = new SocialConnectController(connectionFactoryLocator, connectionRepository);
+        controller.addInterceptor(new TweetAfterConnectInterceptor());
+        controller.addInterceptor(new PostToWallAfterConnectInterceptor());
+        return controller;
+    }
+    
+    
+    @Bean
+    public ReconnectFilter apiExceptionHandler(
+            UsersConnectionRepository usersConnectionRepository,
+            UserIdSource userIdSource) {
+        return new ReconnectFilter(usersConnectionRepository, userIdSource);
+    }
+    
+    //
+    // API Binding Beans
+    //
+    @Bean
+    @Scope(value = "request", proxyMode = ScopedProxyMode.INTERFACES)
+    public Facebook facebook(ConnectionRepository repository) {
+        Connection<Facebook> connection = repository
+                .findPrimaryConnection(Facebook.class);
+        return connection != null ? connection.getApi() : null;
+    }
 
-		controller.addInterceptor(new TweetAfterConnectInterceptor());
-		controller.addInterceptor(new PostToWallAfterConnectInterceptor());
-		return controller;
-	}
-	
-	
-	@Bean
-	public ReconnectFilter apiExceptionHandler(
-			UsersConnectionRepository usersConnectionRepository,
-			UserIdSource userIdSource) {
-		return new ReconnectFilter(usersConnectionRepository, userIdSource);
-	}
-	
-	//
-	// API Binding Beans
-	//
+    @Bean
+    @Scope(value = "request", proxyMode = ScopedProxyMode.INTERFACES)
+    public Twitter twitter(ConnectionRepository repository) {
+        Connection<Twitter> connection = repository
+                .findPrimaryConnection(Twitter.class);
+        return connection != null ? connection.getApi() : null;
+    }
 
-	@Bean
-	@Scope(value = "request", proxyMode = ScopedProxyMode.INTERFACES)
-	public Facebook facebook(ConnectionRepository repository) {
-		Connection<Facebook> connection = repository
-				.findPrimaryConnection(Facebook.class);
-		return connection != null ? connection.getApi() : null;
-	}
+    @Bean
+    @Scope(value = "request", proxyMode = ScopedProxyMode.INTERFACES)
+    public LinkedIn linkedIn(ConnectionRepository repository) {
+        Connection<LinkedIn> connection = repository.findPrimaryConnection(LinkedIn.class);
+        return connection != null ? connection.getApi() : null;
+    }
+    
+    @Bean
+    @Scope(value ="request", proxyMode = ScopedProxyMode.INTERFACES)
+    public Google google(ConnectionRepository repository) {
+        Connection<Google> connection = repository.findPrimaryConnection(Google.class);
+        return connection != null ? connection.getApi() : null;
+    }
 
-	@Bean
-	@Scope(value = "request", proxyMode = ScopedProxyMode.INTERFACES)
-	public Twitter twitter(ConnectionRepository repository) {
-		Connection<Twitter> connection = repository
-				.findPrimaryConnection(Twitter.class);
-		return connection != null ? connection.getApi() : null;
-	}
-	
-	@Bean
-        @Scope(value = "request", proxyMode = ScopedProxyMode.INTERFACES)
-        public LinkedIn linkedIn(ConnectionRepository repository){
-            Connection<LinkedIn> connection = repository.findPrimaryConnection(LinkedIn.class);
-            return connection != null ? connection.getApi() : null;
-        }
 }

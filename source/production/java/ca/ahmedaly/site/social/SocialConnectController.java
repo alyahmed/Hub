@@ -1,6 +1,5 @@
 package ca.ahmedaly.site.social;
 
-
 import org.springframework.social.connect.ConnectionFactoryLocator;
 import org.springframework.social.connect.ConnectionRepository;
 import org.springframework.social.connect.web.ConnectController;
@@ -16,5 +15,4 @@ public class SocialConnectController extends ConnectController {
             ConnectionRepository connectionRepository) {
         super(connectionFactoryLocator, connectionRepository);
     }
-
 }

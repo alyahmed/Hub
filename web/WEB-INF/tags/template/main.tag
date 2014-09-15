@@ -14,11 +14,23 @@
             <c:out value="${fn:trim(htmlTitle)}" /></title>
         <!-- Bootstrap core CSS -->
         <link href="<c:url value="/resource/css/bootstrap.css" /> " rel="stylesheet">
-        <!-- Custom CSS -->
+        <link href="<c:url value="/resource/css/animate.css" /> " rel="stylesheet">
+        <link href="<c:url value="/resource/css/alertify/alertify.core.css" /> " rel="stylesheet">
+        <link href="<c:url value="/resource/css/alertify/alertify.default.css" /> " rel="stylesheet">
+
+        <!-- Main CSS -->
+        <link href="<c:url value="/resource/css/main.css" /> " rel="stylesheet">
+        <!-- Datepicker CSS -->
+        <link href="<c:url value="/resource/css/datepicker.css" /> " rel="stylesheet">
+        <!-- Font Awesome -->
         <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-        <link href="<c:url value="/resource/css/sb-admin.css" /> " rel="stylesheet">
-        <!-- Morris Graphs-->
-        <link rel="stylesheet" href="http://cdn.oesmith.co.uk/morris-0.4.3.min.css">
+
+        <!-- HTML5 shiv and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+                <script src="js/html5shiv.js"></script>
+                <script src="js/respond.min.js"></script>
+                <![endif]-->
+
         <script type="text/javascript" lang="javascript">
             var postInvisibleForm = function (url, fields) {
                 var form = $('<form id="mapForm" method="post"></form>')
@@ -42,36 +54,53 @@
 
         <!-- HEADER -->
         <jsp:invoke fragment="header" /><!-- HeaderBar -->
-
-        <div id="wrapper">
-            <jsp:invoke fragment="navigationContent" /> <!-- Side Bar -->
-            <jsp:doBody /> <!-- Page Content -->
-        </div>
+        <!-- Side Bar -->
+        <jsp:invoke fragment="navigationContent" /> 
+        <!-- Main Content -->
+        <jsp:doBody /> <!-- Page Content -->
     </body>
     <!--End Container-->
 
     <!-- Javascript -->
-    <script src="http://cdn.oesmith.co.uk/morris-0.4.3.min.js"></script>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
 
-    <script src="<c:url value="/resource/js/jquery-1.10.2.js" />"></script>
-    <script src="<c:url value="/resource/js/bootstrap.js" />"></script>
-    <script src="<c:url value="/resource/js/morris/chart-data-morris.js" />"></script>
-    <script src="<c:url value="/resource/js/tablesorter/jquery.tablesorter.js" />"></script>
-    <script src="<c:url value="/resource/js/tablesorter/tables.js" />"></script>
+    <!-- JQuery (necessary for Bootstrap's Javascript plugins) -->
+    <script src="<c:url value="/resource/js/jquery.js" />"></script>
+
+
+    <!-- jQuery UI JS -->
+    <script src="<c:url value="/resource/js/jquery-ui-v1.10.3.js" />"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="<c:url value="/resource/js/bootstrap.min.js" />"></script>
+    <!-- Sparkline graphs -->
+    <script src="<c:url value="/resource/js/sparkline.js" />"></script>
+    <!-- jquery ScrollUp JS -->
+    <script src="<c:url value="/resource/js/scrollup//jquery.scrollUp.js" />"></script>
+    <!-- Notifications JS -->
+    <script src="<c:url value="/resource/js/alertify/alertify.js" />"></script>
+    <script src="<c:url value="/resource/js/alertify/alertify-custom.js" />"></script>
+    <!-- Flot Charts -->
+    <script src="<c:url value="/resource/js/flot/jquery.flot.js" />"></script>
+    <script src="<c:url value="/resource/js/flot/jquery.flot.tooltip.min.js" />"></script>
+    <script src="<c:url value="/resource/js/flot/jquery.flot.resize.min.js" />"></script>
+    <script src="<c:url value="/resource/js/flot/jquery.flot.stack.min.js" />"></script>
+    <script src="<c:url value="/resource/js/flot/jquery.flot.orderBar.min.js" />"></script>
+    <script src="<c:url value="/resource/js/flot/jquery.flot.pie.min.js" />"></script>
+
+    <!-- JVector Map -->
+    <script src="<c:url value="/resource/js/jvectormap/jquery-jvectormap-1.2.2.min.js" />"></script>
+    <script src="<c:url value="/resource/js/jvectormap/jquery-jvectormap-usa.js" />"></script>
+    <!-- Custom Index -->
+    <script src="<c:url value="/resource/js/custom.js" />"></script>
+    <script src="<c:url value="/resource/js/custom-index.js" />"></script>
+
     <script>
             // Fixes bootstrap.js issue where classes aren't added to navigation bar
             var url = window.location;
-            // Will only work if string in href matches with location
-            $('ul.nav a[href="' + url + '"]').parent().addClass('active');
-
             // Will also work for relative and absolute hrefs
-            $('ul.nav a').filter(function () {
+            $('ul.side-menu a').filter(function () {
                 return this.href == url;
-            }).parent().addClass('active');
+            }).parent().addClass('highlight').append("<span class='current-page'></span>");
+
     </script>
-
-
-
 
 </html>

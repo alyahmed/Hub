@@ -23,7 +23,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.social.UserIdSource;
 import org.springframework.social.security.AuthenticationNameUserIdSource;
 import org.springframework.social.security.SocialUserDetailsService;
-import org.springframework.social.security.SpringSocialConfigurer;
 
 import ca.ahmedaly.site.UserService;
 import ca.ahmedaly.site.social.SimpleSocialUsersDetailService;
@@ -82,7 +81,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
                     .anyRequest().authenticated()
                 .and().formLogin()
                     .loginPage("/login").failureUrl("/login?loginFailed")
-                    .defaultSuccessUrl("/home/dashboard")
+                    .defaultSuccessUrl("/connect")
                     .usernameParameter("username")
                     .passwordParameter("password")
                     .permitAll()
