@@ -5,17 +5,11 @@
     <form:form action="${connectFacebookUrl}" method="POST">
         <input type="hidden" name="_csrf" value="${_csrf.token}" />
         <div class="formInfo">
-            <p>You haven't created any connections with Facebook yet. Click
-                the button to connect Spring Social Showcase with your Facebook
-                account. (You'll be redirected to Facebook where you'll be asked to
-                authorize the connection.)</p>
+            <p>You haven't created any connections with Facebook yet.</p>
         </div>
 
-        <button type="submit">Connect to Facebook</button>
-        <label for="postTweet"><input id="postTweet" type="checkbox"
-                                      name="postTweet" /> Post a tweet about connecting with Spring
-            Social Showcase</label>
-        </form:form>
+        <button class="btn btn-fb" type="submit"><i class="fa fa-facebook fa-lg icon-rounded icon-fb"></i>Connect to Facebook</button>
+    </form:form>
 
 
 

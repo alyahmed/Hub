@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.RedirectView;
 
 import ca.ahmedaly.config.annotation.WebController;
 import ca.ahmedaly.site.entities.UserPrincipal;
@@ -46,7 +45,7 @@ public class SignUpController {
 		
 		model.put("signUpForm", signUpForm);
 		
-		return new ModelAndView("/user/signUpForm", model);
+		return new ModelAndView("/signUpForm", model);
 	}
 	
 	

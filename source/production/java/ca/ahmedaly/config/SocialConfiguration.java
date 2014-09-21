@@ -29,8 +29,6 @@ import ca.ahmedaly.site.social.twitter.TweetAfterConnectInterceptor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.social.connect.web.ConnectController;
-import org.springframework.social.google.api.Google;
-import org.springframework.social.google.connect.GoogleConnectionFactory;
 import org.springframework.social.linkedin.api.LinkedIn;
 import org.springframework.social.linkedin.connect.LinkedInConnectionFactory;
 
@@ -58,13 +56,8 @@ public class SocialConfiguration implements SocialConfigurer {
 
     private final String LINKEDIN_APP_KEY = "77eroyg7yrjq22";
     private final String LINKEDIN_APP_SECRET = "OfTYGuRZXFplowCN";
+    private final String LINKEDIN_SCOPE = "r_fullprofile r_emailaddress r_network";
 
-    private final String GOOGLE_CONSUMER_KEY = "1011116789942-adunbpm54fqt2iqo1ts7mrtsv447s2qm.apps.googleusercontent.com";
-    private final String GOOGLE_CONSUMER_SECRET = "X6HQpJ8q7LG2NkEJYytrzdJz";
-    
-    private final String GOOGLE_SCOPE = "profile email https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/tasks"; //MUST be seperated by spaces only!
-    private final String GOOGLE_RESPONSE_TYPE = "code"; //DEFAULT
-    
     @Override
     public void addConnectionFactories(ConnectionFactoryConfigurer cfConfig,
             Environment env) {
@@ -72,11 +65,11 @@ public class SocialConfiguration implements SocialConfigurer {
                 TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET));
         cfConfig.addConnectionFactory(new FacebookConnectionFactory(
                 FACEBOOK_APP_ID, FACBOOK_APP_SECRET));
-        cfConfig.addConnectionFactory(new LinkedInConnectionFactory(LINKEDIN_APP_KEY, LINKEDIN_APP_SECRET));
-        GoogleConnectionFactory gcf = new GoogleConnectionFactory(GOOGLE_CONSUMER_KEY, GOOGLE_CONSUMER_SECRET);
-        gcf.setScope(GOOGLE_SCOPE);
-        cfConfig.addConnectionFactory(gcf);
+        LinkedInConnectionFactory lcf = new LinkedInConnectionFactory(LINKEDIN_APP_KEY, LINKEDIN_APP_SECRET);
+        lcf.setScope(LINKEDIN_SCOPE);
+        cfConfig.addConnectionFactory(lcf);
     }
+
     @Override
     public UsersConnectionRepository getUsersConnectionRepository(
             ConnectionFactoryLocator connectionFactoryLocator) {
@@ -86,18 +79,17 @@ public class SocialConfiguration implements SocialConfigurer {
 
     @Override
     public UserIdSource getUserIdSource() {
-        return new UserIdSource() {			
-			@Override
-			public String getUserId() {
-				Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-				if (authentication == null) {
-					throw new IllegalStateException("Unable to get a ConnectionRepository: no user signed in");
-				}
-				return authentication.getName();
-			}
-		};
+        return new UserIdSource() {
+            @Override
+            public String getUserId() {
+                Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+                if (authentication == null) {
+                    throw new IllegalStateException("Unable to get a ConnectionRepository: no user signed in");
+                }
+                return authentication.getName();
+            }
+        };
     }
-
 
     /*
      * Web Controller and Filter beans
@@ -117,15 +109,12 @@ public class SocialConfiguration implements SocialConfigurer {
         controller.addInterceptor(new PostToWallAfterConnectInterceptor());
         return controller;
     }
-    
-    
+
     @Bean
-    public ReconnectFilter apiExceptionHandler(
-            UsersConnectionRepository usersConnectionRepository,
-            UserIdSource userIdSource) {
+    public ReconnectFilter apiExceptionHandler(UsersConnectionRepository usersConnectionRepository, UserIdSource userIdSource) {
         return new ReconnectFilter(usersConnectionRepository, userIdSource);
     }
-    
+
     //
     // API Binding Beans
     //
@@ -151,12 +140,6 @@ public class SocialConfiguration implements SocialConfigurer {
         Connection<LinkedIn> connection = repository.findPrimaryConnection(LinkedIn.class);
         return connection != null ? connection.getApi() : null;
     }
-    
-    @Bean
-    @Scope(value ="request", proxyMode = ScopedProxyMode.INTERFACES)
-    public Google google(ConnectionRepository repository) {
-        Connection<Google> connection = repository.findPrimaryConnection(Google.class);
-        return connection != null ? connection.getApi() : null;
-    }
+
 
 }

@@ -13,12 +13,10 @@
         <spring:message code="nav.item.social.facebook" var="facebookTitle" />
         <spring:message code="nav.item.social.linkedin" var="linkedinTitle"/>
         <spring:message code="nav.item.social.instagram" var="instagramTitle" />
-        <spring:message code="nav.item.social.reddit" var="redditTitle" />
-        <spring:message code="nav.item.social.google" var="googleTitle" />
         <spring:message code="nav.item.social.timeline" var="timelineTitle" />
         <spring:message code="nav.item.list.session" var="listSessions" />
+        
         <security:authentication var="userName" property="principal.username" />
-
         <c:url var="homeUrl" value="/connect" /> <!-- Dashboard Console -->
         <c:url var="logoUrl" value="/resource/img/logo_1.png" /> <!-- Website Logo -->
         <c:url var="profileUrl" value="/user/profile" /> <!-- User Profile Settings -->
@@ -27,13 +25,12 @@
         <c:url var="logoutUrl" value="/logout" /> <!-- Log out of application -->
         <c:url var="twitterProfileUrl" value="/connect/twitter" /> <!-- Check out Twitter Profile or Status-->
         <c:url var="facebookProfileUrl" value="/connect/facebook" /> <!-- Check out Facebook Profile or Status-->
-        <c:url var="googleProfileUrl" value="/connect/google" /> <!-- Check Out Google profile or Status-->
         <c:url var="linkedinProfileUrl" value="/connect/linkedin" /> <!-- Check out Twitter Profile or Status-->
         <c:url var="instagramProfileUrl" value="#" /> <!-- Check out Instagram Profile or Status-->
-        <c:url var="redditProfileUrl" value="#" /> <!-- Check out Reddit profile -->
         <c:url var="timelineUrl" value="/timeline" /> <!-- Timeline -->
         <c:url var="profilePictureUrl" value="/resource/img/user4.jpg" /> 
-
+        <c:url var="settingsUrl" value="/user/settings" />
+        
         <!-- END OF SITE URLS -->
         <!-- Header Start -->
         <header>
@@ -81,6 +78,11 @@
                         </a>
                     </li>
                     <li>
+                        <a href="${settingsUrl}">
+                            <i class="fa fa-sliders text-info"></i>
+                        </a>
+                        
+                    <li>
                         <a href="javascript:void 0;" onclick="postInvisibleForm('${logoutUrl}', {});">
                             <i class="fa fa-sign-out text-danger"></i>
                         </a>
@@ -124,19 +126,9 @@
                     <li><a href="${linkedinProfileUrl}">
                             <i class="fa fa-linkedin"> </i>  ${linkedinTitle}</a>
                     </li>
-                    <!-- Google Specific Links -->
-                    <li><a href="${googleProfileUrl}">
-                            <i class="fa fa-google-plus"> </i>  ${googleTitle}</a>
-                    </li>
                     <!-- Instagram Specific Links -->
                     <li><a href="${instagramProfileUrl}">
                             <i class="fa fa-instagram"></i>  ${instagramTitle}</a>
-                    </li>
-
-                    <!-- Reddit Specific Links --><spring:message
-                        code="nav.item.social.reddit" />
-                    <li><a href="${redditProfileUrl}">
-                            <i class="fa fa-reddit"></i>  ${redditTitle}</a>
                     </li>
                 </ul>
             </div>
@@ -144,12 +136,13 @@
         </aside>
         <!-- Left sidebar ends -->
     </jsp:attribute>
-
     <jsp:body>
         <div class="dashboard-wrapper">
-            <div class="top-bar">
-                <div class="page-title">
-                    ${bodyTitle}
+            <div class="spacer">
+                <div class="top-bar">
+                    <div class="page-title">
+                        ${bodyTitle}
+                    </div>
                 </div>
             </div>
             <div class="main-container">
@@ -158,8 +151,6 @@
                 </div>
             </div>
             <div class="right-sidebar"></div>
-
         </div>
-
     </jsp:body>
 </template:main>

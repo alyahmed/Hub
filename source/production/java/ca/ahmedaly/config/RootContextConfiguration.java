@@ -43,6 +43,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.concurrent.Executor;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 @Configuration
 @EnableScheduling
@@ -62,31 +63,29 @@ import java.util.concurrent.Executor;
 )
 @ComponentScan(
         basePackages = "ca.ahmedaly.site",
-        excludeFilters =
-        @ComponentScan.Filter({Controller.class, ControllerAdvice.class})
+        excludeFilters
+        = @ComponentScan.Filter({Controller.class, ControllerAdvice.class})
 )
-@Import({ SecurityConfiguration.class, SocialConfiguration.class })
+@Import({SecurityConfiguration.class, SocialConfiguration.class})
 public class RootContextConfiguration implements
-        AsyncConfigurer, SchedulingConfigurer
-{	
-	
-	private final String DATASOURCE_JDBC_URL = "";
-	private final String DATASOURCE_USERNAME = "";
-	private final String DATASOURCE_PASSWORD = "";
-	private final String DATASOURCE_DRIVER = "";
-	
-	
-    private static final Logger log = LogManager.getLogger();
-    private static final Logger schedulingLogger =
-            LogManager.getLogger(log.getName() + ".[scheduling]");
+        AsyncConfigurer, SchedulingConfigurer {
 
-    @Inject LoadTimeWeaver loadTimeWeaver; // TODO: remove when SPR-10856 fixed
+    private final String DATASOURCE_JDBC_URL = "";
+    private final String DATASOURCE_USERNAME = "";
+    private final String DATASOURCE_PASSWORD = "";
+    private final String DATASOURCE_DRIVER = "";
+
+    private static final Logger log = LogManager.getLogger();
+    private static final Logger schedulingLogger
+            = LogManager.getLogger(log.getName() + ".[scheduling]");
+
+    @Inject
+    LoadTimeWeaver loadTimeWeaver; // TODO: remove when SPR-10856 fixed
 
     @Bean
-    public MessageSource messageSource()
-    {
-        ReloadableResourceBundleMessageSource messageSource =
-                new ReloadableResourceBundleMessageSource();
+    public MessageSource messageSource() {
+        ReloadableResourceBundleMessageSource messageSource
+                = new ReloadableResourceBundleMessageSource();
         messageSource.setCacheSeconds(-1);
         messageSource.setDefaultEncoding(StandardCharsets.UTF_8.name());
         messageSource.setBasenames(
@@ -98,25 +97,22 @@ public class RootContextConfiguration implements
     }
 
     @Bean
-    public LocalValidatorFactoryBean localValidatorFactoryBean()
-    {
+    public LocalValidatorFactoryBean localValidatorFactoryBean() {
         LocalValidatorFactoryBean validator = new LocalValidatorFactoryBean();
         validator.setValidationMessageSource(this.messageSource());
         return validator;
     }
 
     @Bean
-    public MethodValidationPostProcessor methodValidationPostProcessor()
-    {
-        MethodValidationPostProcessor processor =
-                new MethodValidationPostProcessor();
+    public MethodValidationPostProcessor methodValidationPostProcessor() {
+        MethodValidationPostProcessor processor
+                = new MethodValidationPostProcessor();
         processor.setValidator(this.localValidatorFactoryBean());
         return processor;
     }
 
     @Bean
-    public ObjectMapper objectMapper()
-    {
+    public ObjectMapper objectMapper() {
         ObjectMapper mapper = new ObjectMapper();
         mapper.findAndRegisterModules();
         mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
@@ -126,27 +122,30 @@ public class RootContextConfiguration implements
     }
 
     @Bean
-    public Jaxb2Marshaller jaxb2Marshaller()
-    {
+    public Jaxb2Marshaller jaxb2Marshaller() {
         Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
-        marshaller.setPackagesToScan(new String[] { "ca.ahmedaly.site" });
+        marshaller.setPackagesToScan(new String[]{"ca.ahmedaly.site"});
         return marshaller;
     }
 
     @Bean
-    public DataSource dataSource()
-    {
-    	BasicDataSource ds = new BasicDataSource();
-    	ds.setDriverClassName("com.mysql.jdbc.Driver");
-    	ds.setUrl("jdbc:mysql://localhost:3306/Hub");
-    	ds.setUsername("hub_dev");
-    	ds.setPassword("password1234");
-    	return ds;
+    public DataSource dataSource() {
+        BasicDataSource ds = new BasicDataSource();
+        ds.setDriverClassName("com.mysql.jdbc.Driver");
+        ds.setUrl("jdbc:mysql://localhost:3306/Hub");
+        ds.setUsername("hub_dev");
+        ds.setPassword("password1234");
+        return ds;
+    }
+    
+    //For Spring Social Reconnect Filter to fix Incorrect tokens and use refresh tokens
+    @Bean
+    public JdbcTemplate jdbcTemplate() {
+        return new JdbcTemplate(dataSource());
     }
 
     @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean()
-    {
+    public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean() {
         Map<String, Object> properties = new Hashtable<>();
         properties.put("javax.persistence.schema-generation.database.action",
                 "none");
@@ -155,8 +154,8 @@ public class RootContextConfiguration implements
         HibernateJpaVendorAdapter adapter = new HibernateJpaVendorAdapter();
         adapter.setDatabasePlatform("org.hibernate.dialect.MySQL5InnoDBDialect");
         adapter.setShowSql(true);
-        LocalContainerEntityManagerFactoryBean factory =
-                new LocalContainerEntityManagerFactoryBean();
+        LocalContainerEntityManagerFactoryBean factory
+                = new LocalContainerEntityManagerFactoryBean();
         factory.setJpaVendorAdapter(adapter);
         factory.setDataSource(this.dataSource());
         factory.setPackagesToScan("ca.ahmedaly.site.entities",
@@ -169,16 +168,14 @@ public class RootContextConfiguration implements
     }
 
     @Bean
-    public PlatformTransactionManager jpaTransactionManager()
-    {
+    public PlatformTransactionManager jpaTransactionManager() {
         return new JpaTransactionManager(
                 this.entityManagerFactoryBean().getObject()
         );
     }
 
     @Bean
-    public ThreadPoolTaskScheduler taskScheduler()
-    {
+    public ThreadPoolTaskScheduler taskScheduler() {
         log.info("Setting up thread pool task scheduler with 20 threads.");
         ThreadPoolTaskScheduler scheduler = new ThreadPoolTaskScheduler();
         scheduler.setPoolSize(20);
@@ -197,16 +194,14 @@ public class RootContextConfiguration implements
     }
 
     @Override
-    public Executor getAsyncExecutor()
-    {
+    public Executor getAsyncExecutor() {
         Executor executor = this.taskScheduler();
         log.info("Configuring asynchronous method executor {}.", executor);
         return executor;
     }
 
     @Override
-    public void configureTasks(ScheduledTaskRegistrar registrar)
-    {
+    public void configureTasks(ScheduledTaskRegistrar registrar) {
         TaskScheduler scheduler = this.taskScheduler();
         log.info("Configuring scheduled method executor {}.", scheduler);
         registrar.setTaskScheduler(scheduler);

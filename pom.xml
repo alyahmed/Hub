@@ -25,7 +25,7 @@
         <spring.social.facebook.version>2.0.0.M1</spring.social.facebook.version>
         <spring.social.twitter.version>1.1.0.RELEASE</spring.social.twitter.version>
         <spring.social.linkedin.version>1.0.0.RELEASE </spring.social.linkedin.version>
-        <spring.social.google.version>1.0.0.RELEASE </spring.social.google.version>
+        <spring.social.instagram.version>1.0.0.BUILD </spring.social.instagram.version>
     </properties>
 
     <repositories>
@@ -411,6 +411,12 @@
             <artifactId>spring-social-facebook</artifactId>
             <version>${spring.social.facebook.version}</version>
         </dependency>
+        
+        <dependency>
+            <groupId>org.springframework.social</groupId>
+            <artifactId>spring-social-facebook-web</artifactId>
+            <version>${spring.social.facebook.version} </version>
+        </dependency>
 
         <!-- Spring Social Twitter Extension -->
         <dependency>
@@ -426,12 +432,7 @@
             <version>${spring.social.linkedin.version}</version>
         </dependency>
                 
-        <!-- Spring Social Google Extension-->
-        <dependency>
-            <groupId>org.springframework.social</groupId>
-            <artifactId>spring-social-google</artifactId>
-            <version>${spring.social.google.version}</version>
-        </dependency>
+        <!-- Spring Social Instagram Extension-->
         <!-- Unit Testing Framework -->
         <dependency>
             <groupId>junit</groupId>

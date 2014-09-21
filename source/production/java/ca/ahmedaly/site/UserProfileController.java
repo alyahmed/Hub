@@ -6,10 +6,12 @@
 package ca.ahmedaly.site;
 
 import ca.ahmedaly.config.annotation.WebController;
-import javax.inject.Inject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.social.connect.Connection;
 import org.springframework.ui.Model;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -23,14 +25,23 @@ public class UserProfileController {
 
     private static final Logger log = LogManager.getLogger();
     
-    @Inject UserService userService;
+    @Autowired ConnectionService connectionService;
+    
+    @Autowired UserService userService;
     
     
     @RequestMapping(value = {"", "profile"}, method = RequestMethod.GET)
     public String showProfile(Model model){
-        
         log.debug("GET /user/profile - Returning User Profile View Page");
         return "user/profile";
+    }
+    
+    @RequestMapping(value ="settings", method = RequestMethod.GET)
+    public String showSettings(Model model){
+        log.debug("GET /user/settings - Returning Social Configuration Settings");
+        MultiValueMap<String, Connection<?>> connectionMap = connectionService.findAllConnections();
+        model.addAttribute("connectionMap", connectionMap);
+        return "user/settings";
     }
     
     

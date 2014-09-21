@@ -10,6 +10,8 @@
     <!-- Twitter Global Trends -->
     <c:url var="twitterMessagesUrl" value="/twitter/messages" />
     <!-- Twitter Direct Messages -->
+    <c:url var="twitterDisconnect" value="/disconnect/twitter" />
+    
     <spring:message code="nav.item.social.twitter.timeline" var="twitterTimeline" />
     <spring:message code="nav.item.social.twitter.friends" var="twitterFriends" />
     <spring:message code="nav.item.social.twitter.trends" var="twitterTrends" />
@@ -18,7 +20,8 @@
     <div class="col-md-12 col-sm-12 col-sx-12">
         <div class="current-profile">
             <div class="user-bg"></div>
-            <div class="user-pic"> </div>
+            <img src="/resource/img/profile-bg1.jpg" />
+           
             <div class="user-details">
                 <h4 class="user-name"> @${profile.screenName}</h4>
                 <h5 class="description">${profile.description}</h5>
@@ -50,11 +53,18 @@
         </div>
     </div>
 
+
+
     <div class="btn-group btn-group-justified center-align-text">
         <a class="btn btn-warning btn-rounded"  href="${twitterTimelineUrl}" role="button" data-original-title="" title="">${twitterTimeline}</a>
         <a class="btn btn-success" role="button" href="${twitterFriendsUrl}" data-original-title="" title="">${twitterFriends}</a>
         <a class="btn btn-info" role="button"href="${twitterTrendsUrl}"  data-original-title="" title="">${twitterTrends}</a>
         <a class="btn btn-danger btn-rounded" role="button" data-original-title="" title="">Last</a>
     </div>
+         <form id="disconnect" action="${twitterDisconnect}" method="POST">
+                <input type="hidden" name="_csrf" value="${_csrf.token}" />
+                <button type="submit">Disconnect from Twitter</button>	
+                <input type="hidden" name="_method" value="delete" />
+            </form>
 
 </template:basic>

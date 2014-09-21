@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ca.ahmedaly.site.social;
 
 import ca.ahmedaly.config.annotation.WebController;
@@ -10,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.ConnectionRepository;
 import org.springframework.social.facebook.api.Facebook;
-import org.springframework.social.google.api.Google;
 import org.springframework.social.linkedin.api.LinkedIn;
 import org.springframework.social.twitter.api.Twitter;
 import org.springframework.ui.Model;
@@ -51,15 +45,15 @@ public class TimelineController {
             model.addAttribute("linkedin", connection2);
         }
 
-        Connection<Google> connection3 = repository.findPrimaryConnection(Google.class);
+        Connection<Facebook> connection3 = repository.findPrimaryConnection(Facebook.class);
         if (connection3 != null) {
-            model.addAttribute("googleTasks", connection3.getApi().taskOperations().getTaskLists().getItems().get(0));
+            model.addAttribute("facebook", connection3);
         }
-
-        Connection<Facebook> connection4 = repository.findPrimaryConnection(Facebook.class);
-        if (connection4 != null) {
-            model.addAttribute("facebook", connection4);
-        }
+        
+        if(connection == null && connection2 == null && connection3 == null)
+            model.addAttribute("connectionsEmpty", true);
+        
+        model.addAttribute("connections", repository.findAllConnections());
         return "timeline/timeline";
     }
 

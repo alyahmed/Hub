@@ -220,7 +220,7 @@ public class UserPrincipal implements UserDetails, CredentialsContainer, Cloneab
     }
 
     @Override
-    public String toString()
+    public String toString()    
     {
         return this.username;
     }

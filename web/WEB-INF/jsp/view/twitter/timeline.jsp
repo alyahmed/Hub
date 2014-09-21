@@ -17,8 +17,6 @@
 
     <div class="timeline animated">
         <c:forEach items="${timeline}" var="tweet">
-            
-            
         <div class="timeline-row active">
             <div class="timeline-time">
                 ${tweet.createdAt} <small>Aug 28</small>

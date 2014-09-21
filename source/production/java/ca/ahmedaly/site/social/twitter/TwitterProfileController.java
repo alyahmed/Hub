@@ -42,7 +42,6 @@ public class TwitterProfileController {
 		}
 		
 		model.addAttribute("profile", connection.getApi().userOperations().getUserProfile());
-		model.addAttribute("suggestedCategories", connection.getApi().userOperations().getSuggestionCategories());
 		return "twitter/profile";
 	}
 	
