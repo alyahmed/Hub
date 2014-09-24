@@ -29,8 +29,6 @@ public class RegistrationUtil {
 		user.setEnabled(true);
 		user.setCredentialsNonExpired(true);
 		
-		
-		
 		// Set Authorization Permissions
 		user.setAuthorities(defaultUserAuthorities());
 		
@@ -41,7 +39,7 @@ public class RegistrationUtil {
 	
 	public static Set<UserAuthority> defaultUserAuthorities(){
 		
-		Set<UserAuthority> authorities = new HashSet<UserAuthority>();
+		Set<UserAuthority> authorities = new HashSet<>();
 		
 		authorities.add(new UserAuthority("VIEW_TICKET"));
 		authorities.add(new UserAuthority("VIEW_COMMENT"));

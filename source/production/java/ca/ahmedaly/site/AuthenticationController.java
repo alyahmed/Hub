@@ -19,7 +19,7 @@ public class AuthenticationController
     {
         if(SecurityContextHolder.getContext().getAuthentication() instanceof
                 UserPrincipal)
-            return new ModelAndView(new RedirectView("/home/dashboard", true, false));
+            return new ModelAndView(new RedirectView("/connect", true, false));
 
         model.put("loginForm", new LoginForm());
         return new ModelAndView("login");

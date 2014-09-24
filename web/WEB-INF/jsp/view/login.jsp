@@ -16,8 +16,6 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-push-4 col-md-4 col-sm-push-3 col-sm-6 col-sx-12">
-
-                <!-- Header end -->
                 <div class="login-container">
                     <div class="login-wrapper animated flipInY">
                         <div id="login" class="show">
@@ -41,6 +39,7 @@
                                     </div>
                                     <input type="submit" value="${forumSubmit}" class="btn btn-danger btn-lg btn-block">
                             </form:form>
+                                    
                             <a href="#register">Don't have an account? <span class="text-danger">Sign Up</span></a>
                         </div>
 

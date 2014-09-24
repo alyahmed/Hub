@@ -33,93 +33,91 @@ import ca.ahmedaly.site.social.SimpleSocialUsersDetailService;
         prePostEnabled = true, order = 0, mode = AdviceMode.PROXY,
         proxyTargetClass = false
 )
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter
-{	
-	@Autowired
-	private ApplicationContext context;
-	
-    @Inject UserService userService;
+public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    private ApplicationContext context;
+
+    @Inject
+    UserService userService;
 
     @Bean
-    protected SessionRegistry sessionRegistryImpl()
-    {
+    protected SessionRegistry sessionRegistryImpl() {
         return new SessionRegistryImpl();
     }
 
     @Bean
     @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception
-    {
+    public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder builder)
-            throws Exception
-    {
+            throws Exception {
         builder
                 .userDetailsService(this.userService)
-                        .passwordEncoder(passwordEncoder())
+                .passwordEncoder(passwordEncoder())
                 .and()
                 .eraseCredentials(true);
     }
 
     @Override
-    public void configure(WebSecurity security)
-    {
-        security.ignoring().antMatchers("/resource/**", "/favicon.ico ", 
-        		"/signup/**", "/user/register/**", "/auth/**", "/disconnect/facebook");
+    public void configure(WebSecurity security) {
+        security.ignoring().antMatchers("/resource/**", "/favicon.ico ",
+                "/signup/**", "/user/register/**", "/auth/**", "/disconnect/facebook");
     }
 
     @Override
-    protected void configure(HttpSecurity security) throws Exception
-    {
+    protected void configure(HttpSecurity security) throws Exception {
         security
                 .authorizeRequests()
-                    .antMatchers("/session/list")
-                        .hasAuthority("VIEW_USER_SESSIONS")
-                    .anyRequest().authenticated()
+                .antMatchers("/session/list")
+                .hasAuthority("VIEW_USER_SESSIONS")
+                .anyRequest().authenticated()
                 .and().formLogin()
-                    .loginPage("/login").failureUrl("/login?loginFailed")
-                    .defaultSuccessUrl("/connect")
-                    .usernameParameter("username")
-                    .passwordParameter("password")
-                    .permitAll()
+                .loginPage("/login").failureUrl("/login?loginFailed")
+                .defaultSuccessUrl("/connect")
+                .usernameParameter("username")
+                .passwordParameter("password")
+                .permitAll()
                 .and().logout()
-                    .logoutUrl("/logout").logoutSuccessUrl("/login?loggedOut")
-                    .invalidateHttpSession(true).deleteCookies("JSESSIONID")
-                    .permitAll()
+                .logoutUrl("/logout").logoutSuccessUrl("/login?loggedOut")
+                .invalidateHttpSession(true).deleteCookies("JSESSIONID")
+                .permitAll()
                 .and().sessionManagement()
-                    .sessionFixation().changeSessionId()
-                    .maximumSessions(1).maxSessionsPreventsLogin(true)
-                    .sessionRegistry(this.sessionRegistryImpl())
+                .sessionFixation().changeSessionId()
+                .maximumSessions(1).maxSessionsPreventsLogin(true)
+                .sessionRegistry(this.sessionRegistryImpl())
                 .and().and().csrf()
-                    .requireCsrfProtectionMatcher((r) -> {
-                        String m = r.getMethod();
-                        return !r.getServletPath().startsWith("/services/") &&
-                                ("POST".equals(m) || "PUT".equals(m) ||
-                                        "DELETE".equals(m) || "PATCH".equals(m));
-                    });
+                .requireCsrfProtectionMatcher((r) -> {
+                    String m = r.getMethod();
+                    return !r.getServletPath().startsWith("/services/")
+                    && ("POST".equals(m) || "PUT".equals(m)
+                    || "DELETE".equals(m) || "PATCH".equals(m));
+                }).and()
+                .authorizeRequests()
+                .antMatchers("/signup/**", "/disconnect/facebook").permitAll();
     }
-    
+
     @Bean
-	public SocialUserDetailsService socialUsersDetailService() {
-		return new SimpleSocialUsersDetailService(userDetailsService());
-	}
-    
+    public SocialUserDetailsService socialUsersDetailService() {
+        return new SimpleSocialUsersDetailService(userDetailsService());
+    }
+
     @Bean
-	public UserIdSource userIdSource() {
-		return new AuthenticationNameUserIdSource();
-	}
-    
+    public UserIdSource userIdSource() {
+        return new AuthenticationNameUserIdSource();
+    }
+
     @Bean
-	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
-    
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
     @Bean
-	public TextEncryptor textEncryptor() {
-		return Encryptors.noOpText();
-	}
-    
+    public TextEncryptor textEncryptor() {
+        return Encryptors.noOpText();
+    }
+
 }
