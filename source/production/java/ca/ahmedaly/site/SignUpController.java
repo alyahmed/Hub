@@ -19,7 +19,6 @@ import org.springframework.web.servlet.ModelAndView;
 import ca.ahmedaly.config.annotation.WebController;
 import ca.ahmedaly.site.entities.UserPrincipal;
 import ca.ahmedaly.site.util.RegistrationUtil;
-import ca.ahmedaly.site.util.SecurityUtil;
 import org.springframework.web.servlet.view.RedirectView;
 
 @WebController()
@@ -39,10 +38,7 @@ public class SignUpController {
     public ModelAndView showSignUpForm(WebRequest request, Map<String, Object> model) {
 
         log.info("GET /signup ----------- Placing new SignUpForm Object in model");
-
-        SignUpForm signUpForm = new SignUpForm();
-
-        model.put("signUpForm", signUpForm);
+        model.put("signUpForm", new SignUpForm());
 
         return new ModelAndView("/signUpForm", model);
     }
@@ -57,26 +53,24 @@ public class SignUpController {
         }
 
         if (result.hasErrors()) {
-            return new ModelAndView("/signup", null);
+            log.info("Errors in result: " + result);
+            return new ModelAndView("/signup");
         }
 
         UserPrincipal user = RegistrationUtil.createUser(signUpForm);
 
         log.info("POST /signup --------- processing user: " + user);
         if (user == null) {
+            log.debug("User is null: " + user);
             return new ModelAndView("/signup");
         }
 
-        userService.saveUser(user, signUpForm.getPassword());
+        userService.saveUserAndAuthenticate(user, signUpForm.getPassword());
 
         log.info("Saving User: " + user);
         log.info("Current Authentication: " + SecurityContextHolder.getContext().getAuthentication());
-        log.info("Authenticating newly created user: " + user);
-        SecurityUtil.logInUser(user);
-
-        log.info("Current Authentication: " + SecurityContextHolder.getContext().getAuthentication());
-
-        return new ModelAndView("/connect", null);
+        log.info("Allowing user into the application");
+        return new ModelAndView("/connect");
 
     }
 

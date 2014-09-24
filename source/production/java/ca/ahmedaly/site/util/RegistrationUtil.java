@@ -47,7 +47,6 @@ public class RegistrationUtil {
 		authorities.add(new UserAuthority("VIEW_ATTACHMENT"));
 		authorities.add(new UserAuthority("CREATE_TICKET"));
 		authorities.add(new UserAuthority("CREATE_COMMENT"));
-		
 		return authorities;
 		
 	}

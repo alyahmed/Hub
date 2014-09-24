@@ -20,5 +20,11 @@ public interface UserService extends UserDetailsService
             String newPassword
     );
     
+    void saveUserAndAuthenticate(
+            @NotNull(message = "{validate.authenticate.saveUser}") @Valid
+                UserPrincipal principal,
+            String newPassword
+    );
+    
     
 }

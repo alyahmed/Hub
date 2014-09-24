@@ -2,6 +2,7 @@ package ca.ahmedaly.site;
 
 import ca.ahmedaly.site.entities.UserPrincipal;
 import ca.ahmedaly.site.repositories.UserRepository;
+import ca.ahmedaly.site.util.SecurityUtil;
 
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
@@ -11,10 +12,14 @@ import javax.inject.Inject;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @Service
 public class DefaultUserService implements UserService
 {
+    private static final Logger log = LogManager.getLogger(DefaultUserService.class);
+
     private static final SecureRandom RANDOM;
     private static final int HASHING_ROUNDS = 10;
 
@@ -55,6 +60,24 @@ public class DefaultUserService implements UserService
             );
         }
         this.userRepository.save(principal);
+    }
+
+    @Override
+    public void saveUserAndAuthenticate(UserPrincipal principal, String newPassword) {
+        if(newPassword != null && newPassword.length() > 0)
+        {
+            log.info("Encrypting password for user: " + principal);
+            String salt = BCrypt.gensalt(HASHING_ROUNDS, RANDOM);
+            principal.setHashedPassword(
+                    BCrypt.hashpw(newPassword, salt).getBytes()
+            );
+            
+        }
+        log.info("Saving User: " + principal);
+        this.userRepository.save(principal);
+        log.info("Saved User: " + principal);
+        SecurityUtil.logInUser(principal);
+        log.info("Authenticated User: " + principal);
     }
 
     

@@ -1,24 +1,20 @@
 package ca.ahmedaly.site.util;
 
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.TestingAuthenticationToken;
+import ca.ahmedaly.site.SignUpController;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.authentication.AuthenticationManagerFactoryBean;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import ca.ahmedaly.site.entities.UserPrincipal;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class SecurityUtil {
-	
-	public static void logInUser(UserPrincipal user){
-		UserDetails userDetails = (UserDetails) user;
-		Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-		
-		
-		SecurityContextHolder.getContext().setAuthentication(authentication);
-	}
+    
+    private static final Logger log = LogManager.getLogger(SignUpController.class);
+    
+    public static void logInUser(UserPrincipal user) {
+        SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(user.getId(), null, user.getAuthorities()));
+        log.info("Authenticated User: " + user.getUsername() + " is now logged in");
+    }
 
 }
