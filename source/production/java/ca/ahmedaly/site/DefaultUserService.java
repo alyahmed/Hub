@@ -16,31 +16,29 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 @Service
-public class DefaultUserService implements UserService
-{
+public class DefaultUserService implements UserService {
+
     private static final Logger log = LogManager.getLogger(DefaultUserService.class);
 
     private static final SecureRandom RANDOM;
     private static final int HASHING_ROUNDS = 10;
 
-    static
-    {
-        try
-        {
+    private SecurityUtil securityUrl;
+
+    static {
+        try {
             RANDOM = SecureRandom.getInstanceStrong();
-        }
-        catch(NoSuchAlgorithmException e)
-        {
+        } catch (NoSuchAlgorithmException e) {
             throw new IllegalStateException(e);
         }
     }
 
-    @Inject UserRepository userRepository;
+    @Inject
+    UserRepository userRepository;
 
     @Override
     @Transactional
-    public UserPrincipal loadUserByUsername(String username)
-    {
+    public UserPrincipal loadUserByUsername(String username) {
         UserPrincipal principal = userRepository.getByUsername(username);
         // make sure the authorities and password are loaded
         principal.getAuthorities().size();
@@ -50,10 +48,8 @@ public class DefaultUserService implements UserService
 
     @Override
     @Transactional
-    public void saveUser(UserPrincipal principal, String newPassword)
-    {
-        if(newPassword != null && newPassword.length() > 0)
-        {
+    public void saveUser(UserPrincipal principal, String newPassword) {
+        if (newPassword != null && newPassword.length() > 0) {
             String salt = BCrypt.gensalt(HASHING_ROUNDS, RANDOM);
             principal.setHashedPassword(
                     BCrypt.hashpw(newPassword, salt).getBytes()
@@ -64,23 +60,20 @@ public class DefaultUserService implements UserService
 
     @Override
     public void saveUserAndAuthenticate(UserPrincipal principal, String newPassword) {
-        if(newPassword != null && newPassword.length() > 0)
-        {
+        if (newPassword != null && newPassword.length() > 0) {
             log.info("Encrypting password for user: " + principal);
             String salt = BCrypt.gensalt(HASHING_ROUNDS, RANDOM);
             principal.setHashedPassword(
                     BCrypt.hashpw(newPassword, salt).getBytes()
             );
-            
+
         }
+        securityUrl = new SecurityUtil();
         log.info("Saving User: " + principal);
         this.userRepository.save(principal);
         log.info("Saved User: " + principal);
-        SecurityUtil.logInUser(principal);
+        securityUrl.logInUser(principal, newPassword);
         log.info("Authenticated User: " + principal);
     }
 
-    
-    
-    
 }

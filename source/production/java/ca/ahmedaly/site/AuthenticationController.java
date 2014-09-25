@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
-
 import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -29,7 +28,9 @@ public class AuthenticationController {
             return new ModelAndView(new RedirectView("/connect", true, false));
         }
         model.put("loginForm", new LoginForm());
-        log.info("Authentication Controller: " + SecurityContextHolder.getContext().getAuthentication());
+        log.info("Authentication Controller: " + SecurityContextHolder.getContext().getAuthentication().getName());
+        log.info("Authentication Controller: " + SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+
         return new ModelAndView("login", model);
     }
 
