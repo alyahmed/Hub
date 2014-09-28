@@ -48,7 +48,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
         includeFilters =
         @ComponentScan.Filter({RestEndpoint.class, RestEndpointAdvice.class})
 )
-public class RestServletContextConfiguration extends WebMvcConfigurerAdapter
+public class RestServletContext extends WebMvcConfigurerAdapter
 {
     private static final Logger log = LogManager.getLogger();
 

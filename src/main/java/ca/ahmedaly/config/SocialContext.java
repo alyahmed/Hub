@@ -37,7 +37,7 @@ import org.springframework.social.linkedin.connect.LinkedInConnectionFactory;
 @Configuration
 @EnableSocial
 @PropertySource("classpath:application.properties")
-public class SocialConfiguration implements SocialConfigurer {
+public class SocialContext implements SocialConfigurer {
 
     @Inject
     private DataSource dataSource;

@@ -17,10 +17,8 @@ public class HomeController {
     
     @Autowired ConnectionRepository ConnectionRepository;
     
-    
     @RequestMapping(value = {"", "dashboard"}, method = RequestMethod.GET)
     public String showDashboard(Model model) {
-
         log.debug("GET /home/dashboard - Displaying Home dashboard");
         log.debug("Attaching Social Media ConnectionRepository instance");
         model.addAttribute("connectionMap", ConnectionRepository.findAllConnections());

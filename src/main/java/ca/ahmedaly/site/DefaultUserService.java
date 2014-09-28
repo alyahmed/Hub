@@ -12,8 +12,14 @@ import javax.inject.Inject;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import javax.inject.Qualifier;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @Service
 public class DefaultUserService implements UserService {
@@ -23,8 +29,6 @@ public class DefaultUserService implements UserService {
     private static final SecureRandom RANDOM;
     private static final int HASHING_ROUNDS = 10;
 
-    private SecurityUtil securityUrl;
-
     static {
         try {
             RANDOM = SecureRandom.getInstanceStrong();
@@ -33,8 +37,7 @@ public class DefaultUserService implements UserService {
         }
     }
 
-    @Inject
-    UserRepository userRepository;
+    @Inject UserRepository userRepository;
 
     @Override
     @Transactional
@@ -66,14 +69,11 @@ public class DefaultUserService implements UserService {
             principal.setHashedPassword(
                     BCrypt.hashpw(newPassword, salt).getBytes()
             );
-
         }
-        securityUrl = new SecurityUtil();
         log.info("Saving User: " + principal);
         this.userRepository.save(principal);
         log.info("Saved User: " + principal);
-        securityUrl.logInUser(principal, newPassword);
-        log.info("Authenticated User: " + principal);
+
     }
 
 }

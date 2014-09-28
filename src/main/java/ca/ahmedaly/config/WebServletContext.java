@@ -58,7 +58,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
         useDefaultFilters = false,
         includeFilters = @ComponentScan.Filter(WebController.class)
 )
-public class WebServletContextConfiguration extends WebMvcConfigurerAdapter
+public class WebServletContext extends WebMvcConfigurerAdapter
 {
     private static final Logger log = LogManager.getLogger();
 

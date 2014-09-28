@@ -14,9 +14,9 @@ import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 
-import ca.ahmedaly.config.RestServletContextConfiguration;
-import ca.ahmedaly.config.RootContextConfiguration;
-import ca.ahmedaly.config.WebServletContextConfiguration;
+import ca.ahmedaly.config.RestServletContext;
+import ca.ahmedaly.config.RootContext;
+import ca.ahmedaly.config.WebServletContext;
 import ca.ahmedaly.site.PreSecurityLoggingFilter;
 
 @SuppressWarnings("unused")
@@ -34,12 +34,12 @@ public class FrameworkBootstrap implements WebApplicationInitializer
 
         AnnotationConfigWebApplicationContext rootContext =
                 new AnnotationConfigWebApplicationContext();
-        rootContext.register(RootContextConfiguration.class);
+        rootContext.register(RootContext.class);
         container.addListener(new ContextLoaderListener(rootContext));
 
         AnnotationConfigWebApplicationContext webContext =
                 new AnnotationConfigWebApplicationContext();
-        webContext.register(WebServletContextConfiguration.class);
+        webContext.register(WebServletContext.class);
         ServletRegistration.Dynamic dispatcher = container.addServlet(
                 "springWebDispatcher", new DispatcherServlet(webContext)
         );
@@ -51,7 +51,7 @@ public class FrameworkBootstrap implements WebApplicationInitializer
 
         AnnotationConfigWebApplicationContext restContext =
                 new AnnotationConfigWebApplicationContext();
-        restContext.register(RestServletContextConfiguration.class);
+        restContext.register(RestServletContext.class);
         DispatcherServlet restServlet = new DispatcherServlet(restContext);
         restServlet.setDispatchOptionsRequest(true);
         dispatcher = container.addServlet("springRestDispatcher", restServlet);

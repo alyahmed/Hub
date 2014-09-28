@@ -3,31 +3,67 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
                              http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
     <groupId>ca.ahmedaly</groupId>
     <artifactId>HubSocial</artifactId>
-    <version>20.0.0-SNAPSHOT</version>
+    <version>5.0.7-SNAPSHOT</version>
     <packaging>war</packaging>
+    <description> 
+        Hub Social is a single content 
+        management system for streamlining 
+        management of social media accounts 
+    </description>
 
     <properties>
+        <!-- PROJECT SETTINGS -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <jackson.version>2.3.1</jackson.version>
+        <jdk.version>1.8</jdk.version>
+        <!-- TESTING -->
         <junit.version>4.8.1</junit.version>
+        <mockito.version>1.9.5</mockito.version>
+        <hamcrest.version>1.3</hamcrest.version>
+        <!-- LOGGING -->
         <log4j.version>2.0-rc1</log4j.version>
+        <!-- SPRING FRAMEWORK -->
+        <!-- Spring Core (includes MVC)-->
         <spring.framework.version>4.0.1.RELEASE</spring.framework.version>
-        <hibernate.validator.version>5.1.0.Beta1</hibernate.validator.version>
+        <!-- Spring Security -->
         <spring.security.version>3.2.0.RELEASE</spring.security.version>
-        <apache.httpcomponents.version>4.3.2</apache.httpcomponents.version>
-        <commons-pool.version>1.6</commons-pool.version>
-        <mysql.connector.version>5.1.6</mysql.connector.version>
-        <commons-dbcp.version>1.2.2</commons-dbcp.version>
+        <!-- Spring Social -->
         <spring.social.version>1.1.0.RELEASE</spring.social.version>
         <spring.social.facebook.version>2.0.0.M1</spring.social.facebook.version>
         <spring.social.twitter.version>1.1.0.RELEASE</spring.social.twitter.version>
         <spring.social.linkedin.version>1.0.0.RELEASE </spring.social.linkedin.version>
         <spring.social.instagram.version>1.0.0.BUILD </spring.social.instagram.version>
+        <!-- PERSISTENCE -->
+        <!-- Hibernate -->
+        <hibernate.validator.version>5.1.0.Beta1</hibernate.validator.version>
+        <!-- MySQL driver -->
+        <mysql.connector.version>5.1.6</mysql.connector.version>
+        <!-- LIBRARIES -->
+        <jackson.version>2.3.1</jackson.version>
+        <apache.httpcomponents.version>4.3.2</apache.httpcomponents.version>
+        <commons-pool.version>1.6</commons-pool.version>
+        <commons-dbcp.version>1.2.2</commons-dbcp.version>
     </properties>
-
+    
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <build.profile.id>dev</build.profile.id>
+            </properties>
+        </profile>
+        <profile>
+            <id>integration-test</id>
+            <properties>
+                <build.profile.id>integration-test</build.profile.id>
+                <skip.integration.tests>false</skip.integration.tests>
+                <skip.unit.tests>true</skip.unit.tests>
+            </properties>
+        </profile>
+    </profiles>
+    
+    
     <repositories>
         <repository>
             <id>repository.springsource.snapshot</id>
@@ -363,20 +399,21 @@
             <version>${spring.security.version}</version>
             <scope>compile</scope>
         </dependency>
-
+        
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-crypto</artifactId>
             <version>${spring.security.version}</version>
             <scope>compile</scope>
         </dependency>
-
+        
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-taglibs</artifactId>
             <version>${spring.security.version}</version>
             <scope>runtime</scope>
         </dependency>
+        
         <!-- Use Apache HttpClient as HTTP Client -->
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
@@ -390,16 +427,19 @@
             <artifactId>spring-social-config</artifactId>
             <version>1.1.0.RELEASE</version>
         </dependency>
+        
         <dependency>
             <groupId>org.springframework.social</groupId>
             <artifactId>spring-social-core</artifactId>
             <version>${spring.social.version} </version>
         </dependency>
+        
         <dependency>
             <groupId>org.springframework.social</groupId>
             <artifactId>spring-social-security</artifactId>
             <version>${spring.social.version} </version>
         </dependency>
+        
         <dependency>
             <groupId>org.springframework.social</groupId>
             <artifactId>spring-social-web</artifactId>
@@ -433,48 +473,168 @@
         </dependency>
                 
         <!-- Spring Social Instagram Extension-->
+        
+        <!-- TESTING DEPENDENCIES -->
         <!-- Unit Testing Framework -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>${junit.version}</version>
             <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <artifactId>hamcrest-core</artifactId>
+                    <groupId>org.hamcrest</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
-
-
+        <!-- Mockito Library-->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>${mockito.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- Hamcrest Library -->
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-all</artifactId>
+            <version>${hamcrest.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- Spring Testing Support Module -->
+        <dependency>
+            <groupId>org.springframework </groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${spring.framework.version}</version>
+            <scope>test</scope>
+        </dependency>
+        
     </dependencies>
-
+    
     <build>
-        <sourceDirectory>source/production/java</sourceDirectory>
+        <finalName>HubSocial</finalName>
+        <filters>
+            <filter>profiles/${build.profile.id}/config.properties</filter>
+        </filters>
         <resources>
             <resource>
-                <directory>source/production/resources</directory>
+                <filtering>true</filtering>
+                <directory>src/main/resources</directory>
+            </resource>
+            <resource>
+                <filtering>false</filtering>
+                <directory>src/main/resources</directory>
             </resource>
         </resources>
 
-        <testSourceDirectory>source/test/java</testSourceDirectory>
-        <testResources>
-            <testResource>
-                <directory>source/test/resources</directory>
-            </testResource>
-        </testResources>
-
         <plugins>
             <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>1.7</version>
+                <executions>
+                    <execution>
+                        <id>add-integration-test-sources</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>add-test-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>src/integration-test/java</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>add-integration-test-resources</id>
+                        <phase>generate-test-resources</phase>
+                        <goals>
+                            <goal>add-test-resource</goal>
+                        </goals>
+                        <configuration>
+                            <resources>
+                                <resource>
+                                    <directory>src/integration-test/resources</directory>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Used for unit tests -->
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>2.3</version>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.12</version>
                 <configuration>
-                    <warSourceDirectory>web</warSourceDirectory>
+                    <skipTests>${skip.unit.tests}</skipTests>
                 </configuration>
+            </plugin>
+            <!-- Used for integration tests -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>2.12</version>
+                <executions>
+                    <!-- States that both integration-test and verify goals of the Failsafe Maven plugin are executed. -->
+                    <execution>
+                        <id>integration-tests</id>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                        <configuration>
+                            <!-- Skips integration tests if the value of skip.integration.tests property is true -->
+                            <skipTests>${skip.integration.tests}</skipTests>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.5.1</version>
+                <configuration>
+                    <source>${jdk.version}</source>
+                    <target>${jdk.version}</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.5</version>
+                <configuration>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.1.1</version>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.mortbay.jetty</groupId>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <version>8.1.5.v20120716</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
                 <version>3.1</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <reportPlugins>
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-javadoc-plugin</artifactId>
+                            <version>2.9</version>
+                        </plugin>
+                    </reportPlugins>
                 </configuration>
             </plugin>
         </plugins>

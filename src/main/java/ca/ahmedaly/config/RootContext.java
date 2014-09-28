@@ -69,9 +69,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
         excludeFilters
         = @ComponentScan.Filter({Controller.class, ControllerAdvice.class})
 )
-@Import({SecurityConfiguration.class, SocialConfiguration.class})
+@Import({SecurityContext.class, SocialContext.class})
 @PropertySource("classpath:application.properties")
-public class RootContextConfiguration implements
+public class RootContext implements
         AsyncConfigurer, SchedulingConfigurer {
 
     @Value("${jdbc.url}")

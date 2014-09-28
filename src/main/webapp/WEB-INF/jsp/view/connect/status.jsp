@@ -9,6 +9,8 @@
     <c:url var="facebookConnectUrl" value="/connect/facebook" />
     <c:url var="instagramConnectUrl" value="#" /> <!-- Check out Instagram Profile-->
     <c:url var="profilePictureUrl" value="/resource/img/user4.jpg" /> 
+    <c:url value="/connect/twitter" var="connectTwitterUrl" />
+
     <div class="current-stats">
         <div class="row">
             <div class="col-lg-2 col-md-4 col-sm-4 col-xs-6">
@@ -37,7 +39,10 @@
                                 <h6 class="no-margin no-padding text-white"> <a href="${twitterProfileUrl}" class="label label-success"> View Profile </a> </h6>
                             </c:when>
                             <c:otherwise>
-                                <h6 class="no-margin no-padding text-white"><a href="${twitterConnectUrl}" class="label label-danger"> Connect </a></h6>
+                                <form:form action="${connectTwitterUrl}" method="POST">
+                                    <input type="hidden" name="_csrf" value="${_csrf.token}" />
+                                    <button type="submit" class="btn btn-danger">Connect</button>
+                                </form:form>
                             </c:otherwise>
                         </c:choose>
                     </div>

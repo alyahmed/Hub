@@ -33,7 +33,7 @@ import ca.ahmedaly.site.social.SimpleSocialUsersDetailService;
         prePostEnabled = true, order = 0, mode = AdviceMode.PROXY,
         proxyTargetClass = false
 )
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+public class SecurityContext extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private ApplicationContext context;
