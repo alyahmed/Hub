@@ -11,7 +11,4 @@
         <button class="btn btn-fb" type="submit"><i class="fa fa-facebook fa-lg icon-rounded icon-fb"></i>Connect to Facebook</button>
     </form:form>
 
-
-
-
 </template:basic>

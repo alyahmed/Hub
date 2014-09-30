@@ -3,15 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ca.ahmedaly.config;
+package ca.ahmedaly.site;
 
-import org.springframework.context.annotation.Configuration;
+import ca.ahmedaly.exception.NoUserConnectionsException;
+import java.util.List;
 
 /**
  *
  * @author ahmed
  */
-@Configuration
-public class TestWebServletContext {
+
+public interface TimelineService {
     
+   public List<TimeLineNode> getNodes() throws NoUserConnectionsException;
+   
 }

@@ -35,6 +35,7 @@ public class FacebookFeedController {
     public String showFeed(Model model) {
         Connection<Facebook> connection = connectionRepository.findPrimaryConnection(Facebook.class);
         model.addAttribute("feed", connection.getApi().feedOperations().getFeed());
+        model.addAttribute("timeline", connection.getApi().feedOperations().getHomeFeed());
         model.addAttribute("api", connection.getApi());
         return "facebook/feed";
     }

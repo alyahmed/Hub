@@ -12,11 +12,12 @@
         <spring:message code="nav.item.social.twitter" var="twitterTitle" />
         <spring:message code="nav.item.social.facebook" var="facebookTitle" />
         <spring:message code="nav.item.social.linkedin" var="linkedinTitle"/>
-        <spring:message code="nav.item.social.instagram" var="instagramTitle" />
         <spring:message code="nav.item.social.timeline" var="timelineTitle" />
+        <spring:message code="nav.item.social.google" var="googleTitle" />
         <spring:message code="nav.item.list.session" var="listSessions" />
-        
+
         <security:authentication var="userName" property="principal.username" />
+
         <c:url var="homeUrl" value="/connect" /> <!-- Dashboard Console -->
         <c:url var="logoUrl" value="/resource/img/logo_1.png" /> <!-- Website Logo -->
         <c:url var="profileUrl" value="/user/profile" /> <!-- User Profile Settings -->
@@ -26,11 +27,10 @@
         <c:url var="twitterProfileUrl" value="/connect/twitter" /> <!-- Check out Twitter Profile or Status-->
         <c:url var="facebookProfileUrl" value="/connect/facebook" /> <!-- Check out Facebook Profile or Status-->
         <c:url var="linkedinProfileUrl" value="/connect/linkedin" /> <!-- Check out Twitter Profile or Status-->
-        <c:url var="instagramProfileUrl" value="#" /> <!-- Check out Instagram Profile or Status-->
+        <c:url var="googleProfileUrl" value="/connect/google" />
         <c:url var="timelineUrl" value="/timeline" /> <!-- Timeline -->
         <c:url var="profilePictureUrl" value="/resource/img/user4.jpg" /> 
         <c:url var="settingsUrl" value="/user/settings" />
-        
         <!-- END OF SITE URLS -->
         <!-- Header Start -->
         <header>
@@ -44,7 +44,6 @@
                 </a>
             </div>
             <!-- Logo ends -->
-
             <!-- Mini right nav starts -->
             <div class="pull-right">
                 <ul id="mini-nav" class="clearfix">
@@ -81,7 +80,7 @@
                         <a href="${settingsUrl}">
                             <i class="fa fa-sliders text-info"></i>
                         </a>
-                        
+
                     <li>
                         <a href="javascript:void 0;" onclick="postInvisibleForm('${logoutUrl}', {});">
                             <i class="fa fa-sign-out text-danger"></i>
@@ -121,14 +120,12 @@
                     <li><a href="${facebookProfileUrl}">
                             <i class="fa fa-facebook"></i>  ${facebookTitle}</a>
                     </li>
-
                     <!-- Linkedin Specific Links -->
                     <li><a href="${linkedinProfileUrl}">
                             <i class="fa fa-linkedin"> </i>  ${linkedinTitle}</a>
                     </li>
-                    <!-- Instagram Specific Links -->
-                    <li><a href="${instagramProfileUrl}">
-                            <i class="fa fa-instagram"></i>  ${instagramTitle}</a>
+                    <li><a href="${googleProfileUrl}">
+                            <i class="fa fa-google"> </i>  ${googleTitle}</a>
                     </li>
                 </ul>
             </div>

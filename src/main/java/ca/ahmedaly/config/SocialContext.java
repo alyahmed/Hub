@@ -31,6 +31,8 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.social.connect.web.ConnectController;
+import org.springframework.social.google.api.Google;
+import org.springframework.social.google.connect.GoogleConnectionFactory;
 import org.springframework.social.linkedin.api.LinkedIn;
 import org.springframework.social.linkedin.connect.LinkedInConnectionFactory;
 
@@ -59,23 +61,38 @@ public class SocialContext implements SocialConfigurer {
     private String FACEBOOK_APP_ID;
     @Value("${facebook.app.secret}")
     private String FACBOOK_APP_SECRET;
+    @Value("${facebook.scope}")
+    private String FACEBOOK_SCOPE;
     @Value("${linkedin.app.key}")
     private String LINKEDIN_APP_KEY;
     @Value("${linkedin.app.secret}")
     private String LINKEDIN_APP_SECRET;
     @Value("${linkedin.app.scope}")
     private String LINKEDIN_SCOPE;
+    @Value("${google.client.id}")
+    private String GOOGLE_CLIENT_ID;
+    @Value("${google.client.secret}")
+    private String GOOGLE_CLIENT_SECRET;
+    @Value("${google.scope}")
+    private String GOOGLE_SCOPE;
 
     @Override
     public void addConnectionFactories(ConnectionFactoryConfigurer cfConfig,
             Environment env) {
+
         cfConfig.addConnectionFactory(new TwitterConnectionFactory(
                 TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET));
-        cfConfig.addConnectionFactory(new FacebookConnectionFactory(
-                FACEBOOK_APP_ID, FACBOOK_APP_SECRET));
-        LinkedInConnectionFactory lcf = new LinkedInConnectionFactory(LINKEDIN_APP_KEY, LINKEDIN_APP_SECRET);
-        lcf.setScope(LINKEDIN_SCOPE);
-        cfConfig.addConnectionFactory(lcf);
+        FacebookConnectionFactory facebookConnectionFactory = new FacebookConnectionFactory(
+                FACEBOOK_APP_ID, FACBOOK_APP_SECRET);
+        
+        facebookConnectionFactory.setScope(FACEBOOK_SCOPE);
+        LinkedInConnectionFactory linkedinConnectionFactory = new LinkedInConnectionFactory(LINKEDIN_APP_KEY, LINKEDIN_APP_SECRET);
+        linkedinConnectionFactory.setScope(LINKEDIN_SCOPE);
+        GoogleConnectionFactory googleConnectionFactory = new GoogleConnectionFactory(GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET);
+        googleConnectionFactory.setScope(GOOGLE_SCOPE);
+        cfConfig.addConnectionFactory(facebookConnectionFactory);
+        cfConfig.addConnectionFactory(linkedinConnectionFactory);
+        cfConfig.addConnectionFactory(googleConnectionFactory);
     }
 
     @Override
@@ -99,14 +116,6 @@ public class SocialContext implements SocialConfigurer {
         };
     }
 
-    /*
-     * Web Controller and Filter beans
-     * 
-     * Controller offers status view at /connect/status. Must implement own view
-     * 
-     * Filters handle connection to service providers and reconnection incase
-     * token expires
-     */
     @Bean
     public ConnectController connectController(
             ConnectionFactoryLocator connectionFactoryLocator,
@@ -123,9 +132,12 @@ public class SocialContext implements SocialConfigurer {
         return new ReconnectFilter(usersConnectionRepository, userIdSource);
     }
 
-    //
-    // API Binding Beans
-    //
+    /**
+     * API Binding Bean
+     *
+     * @param repository
+     * @return
+     */
     @Bean
     @Scope(value = "request", proxyMode = ScopedProxyMode.INTERFACES)
     public Facebook facebook(ConnectionRepository repository) {
@@ -149,5 +161,11 @@ public class SocialContext implements SocialConfigurer {
         return connection != null ? connection.getApi() : null;
     }
 
+    @Bean
+    @Scope(value = "request", proxyMode = ScopedProxyMode.INTERFACES)
+    public Google google(ConnectionRepository repository) {
+        Connection<Google> connection = repository.findPrimaryConnection(Google.class);
+        return connection != null ? connection.getApi() : null;
+    }
 
 }

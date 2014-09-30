@@ -68,7 +68,7 @@
 
 
     <!-- jQuery UI JS -->
-    <script src="<c:url value="/resource/js/jquery-ui-v1.10.3.js" />"></script>
+<!--    <script src="<c:url value="/resource/js/jquery-ui-v1.10.3.js" />"></script>-->
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="<c:url value="/resource/js/bootstrap.min.js" />"></script>
     <!-- Sparkline graphs -->
@@ -78,17 +78,17 @@
     <!-- Notifications JS -->
     <script src="<c:url value="/resource/js/alertify/alertify.js" />"></script>
     <script src="<c:url value="/resource/js/alertify/alertify-custom.js" />"></script>
-    <!-- Flot Charts -->
+<!--     Flot Charts 
     <script src="<c:url value="/resource/js/flot/jquery.flot.js" />"></script>
     <script src="<c:url value="/resource/js/flot/jquery.flot.tooltip.min.js" />"></script>
     <script src="<c:url value="/resource/js/flot/jquery.flot.resize.min.js" />"></script>
     <script src="<c:url value="/resource/js/flot/jquery.flot.stack.min.js" />"></script>
     <script src="<c:url value="/resource/js/flot/jquery.flot.orderBar.min.js" />"></script>
-    <script src="<c:url value="/resource/js/flot/jquery.flot.pie.min.js" />"></script>
+    <script src="<c:url value="/resource/js/flot/jquery.flot.pie.min.js" />"></script>-->
 
-    <!-- JVector Map -->
+<!--     JVector Map 
     <script src="<c:url value="/resource/js/jvectormap/jquery-jvectormap-1.2.2.min.js" />"></script>
-    <script src="<c:url value="/resource/js/jvectormap/jquery-jvectormap-usa.js" />"></script>
+    <script src="<c:url value="/resource/js/jvectormap/jquery-jvectormap-usa.js" />"></script>-->
     <!-- Custom Index -->
     <script src="<c:url value="/resource/js/custom.js" />"></script>
     <script src="<c:url value="/resource/js/custom-index.js" />"></script>

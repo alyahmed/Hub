@@ -26,8 +26,8 @@
         <div class="form-group">
 
             <div class="col-xs-6">
-                <label for="last_name"><h4>${lastName}</h4></label>
-                <input type="text" class="form-control" name="last_name" id="last_name" placeholder="${lastName}" title="enter your last name if any.">
+                <label for="last_name"><h4>Last Name</h4></label>
+                <input type="text" class="form-contro   l" name="last_name" id="last_name" placeholder="${lastName}" title="enter your last name if any.">
             </div>
         </div>
 
