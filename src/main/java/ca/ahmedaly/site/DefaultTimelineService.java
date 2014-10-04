@@ -8,11 +8,10 @@ package ca.ahmedaly.site;
 import ca.ahmedaly.exception.NoUserConnectionsException;
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.social.connect.ConnectionRepository;
-import org.springframework.social.facebook.api.Facebook;
-import org.springframework.social.google.api.Google;
-import org.springframework.social.linkedin.api.LinkedIn;
 import org.springframework.social.twitter.api.Tweet;
 import org.springframework.social.twitter.api.Twitter;
 import org.springframework.stereotype.Service;
@@ -22,45 +21,45 @@ import org.springframework.stereotype.Service;
  * @author ahmed
  */
 @Service
-public class DefaultTimelineService implements TimelineService{
+public class DefaultTimelineService implements TimelineService {
     
-    @Autowired ConnectionRepository ConnectionRepository;
-    @Autowired Google google;
-    @Autowired Twitter twitter;
-    @Autowired Facebook facebook;
-    @Autowired LinkedIn linkedin;
+    
+    private static final Logger LOG = LogManager.getLogger(DefaultTimelineService.class);
     
     
     @Override
-    public List<TimeLineNode> getNodes() throws NoUserConnectionsException {
+    public List<TimelineNode> getNodes(ConnectionRepository repository) throws NoUserConnectionsException {
         
-        if (emptyConnections()) throw new NoUserConnectionsException("No social accounts attached");
+        LOG.info("Checking Connections status " + emptyConnections(repository));
+        if (emptyConnections(repository)) {
+            LOG.debug("No Users Connection Found - Empty Connections Repository");
+            throw new NoUserConnectionsException("No social accounts attached");
+        }
         
-        List<Tweet> homeTimeline = twitter.timelineOperations().getHomeTimeline(10);
-        
-        List<TimeLineNode> nodes = extractContent(homeTimeline);
-        
+        List<Tweet> homeTimeline = repository.findPrimaryConnection(Twitter.class).getApi().timelineOperations().getHomeTimeline();
+        List<TimelineNode> nodes = extractContent(homeTimeline);
         return nodes;
     }
     
     
-    private boolean emptyConnections(){
-        if (google == null && twitter == null & facebook == null & linkedin == null){
+    private boolean emptyConnections(ConnectionRepository repository){
+        
+        if (repository.findAllConnections().isEmpty()){
+            LOG.debug("No Connections Found for User");
             return true;
         }
         return false;
     }
     
     
-    private List<TimeLineNode> extractContent(List<Tweet> tweets){
-        List<TimeLineNode> nodes = new ArrayList<>();
+    private List<TimelineNode> extractContent(List<Tweet> tweets){
+        List<TimelineNode> nodes = new ArrayList<>();
         for (Tweet tweet : tweets) {
-            TimeLineNode node = new TimeLineNode();
-            node.setProviderId("twitter");
-            node.setContent(tweet.getText());
-            node.setTime(tweet.getCreatedAt().toString());
+            TimelineNode node =
+                    new TwitterTimelineNode("Tweet by: " + tweet.getFromUser(), tweet.getText(), tweet.getCreatedAt().toString());
             nodes.add(node);
         }
+        LOG.info("Serving TimelineNodes to TimelineController for User: " + SecurityContextHolder.getContext().getAuthentication());
         return nodes;
     }
     

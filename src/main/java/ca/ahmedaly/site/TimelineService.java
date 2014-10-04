@@ -7,6 +7,7 @@ package ca.ahmedaly.site;
 
 import ca.ahmedaly.exception.NoUserConnectionsException;
 import java.util.List;
+import org.springframework.social.connect.ConnectionRepository;
 
 /**
  *
@@ -15,6 +16,6 @@ import java.util.List;
 
 public interface TimelineService {
     
-   public List<TimeLineNode> getNodes() throws NoUserConnectionsException;
+   public List<TimelineNode> getNodes(ConnectionRepository connectionRepository) throws NoUserConnectionsException;
    
 }

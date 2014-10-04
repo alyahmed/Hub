@@ -85,7 +85,7 @@ public class SocialContext implements SocialConfigurer {
         FacebookConnectionFactory facebookConnectionFactory = new FacebookConnectionFactory(
                 FACEBOOK_APP_ID, FACBOOK_APP_SECRET);
         
-        facebookConnectionFactory.setScope(FACEBOOK_SCOPE);
+//        facebookConnectionFactory.setScope(FACEBOOK_SCOPE);
         LinkedInConnectionFactory linkedinConnectionFactory = new LinkedInConnectionFactory(LINKEDIN_APP_KEY, LINKEDIN_APP_SECRET);
         linkedinConnectionFactory.setScope(LINKEDIN_SCOPE);
         GoogleConnectionFactory googleConnectionFactory = new GoogleConnectionFactory(GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET);
