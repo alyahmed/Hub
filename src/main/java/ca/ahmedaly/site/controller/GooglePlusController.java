@@ -1,4 +1,4 @@
-package ca.ahmedaly.site;
+package ca.ahmedaly.site.controller;
 
 import ca.ahmedaly.config.annotation.WebController;
 import static org.springframework.web.bind.annotation.RequestMethod.*;

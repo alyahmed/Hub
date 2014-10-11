@@ -18,7 +18,13 @@
     <spring:message code="field.signUp.password" var="password"/>
     <spring:message code="field.signUp.passwordVerification" var="passwordVerify" />
     <spring:message code="field.signUp.submit" var="submit" />
+    
+    
+    
     <c:url value="/signup" var="signUpUrl"></c:url>
+    <c:url value="/signin/instagram" var="instagramSignInUrl"></c:url>
+    <c:url value="/signin/twitter" var="twitterSignInUrl"></c:url>
+    <c:url value="/signin/facebook" var="facebookSignInUrl"></c:url>
         <!-- Container Fluid starts -->
         <div class="container-fluid">
             <div class="row">
@@ -46,7 +52,18 @@
                                     </div>
                                     <input type="submit" value="${forumSubmit}" class="btn btn-danger btn-lg btn-block">
                             </form:form>
-                        <button class="btn-rounded btn-success"><a href="${signUpUrl}">Sign Up!</a></button>
+                            <form:form method="POST" action="${instagramSignInUrl}">
+                                <input type="hidden" name="_csrf" value="${_csrf.token}"></input>
+                                <button type="submit"> instagram sign in </button>
+                            </form:form>
+                                <form:form method="POST" action="${twitterSignInUrl}">
+                                <input type="hidden" name="_csrf" value="${_csrf.token}"></input>
+                                <button type="submit"> Twitter sign in </button>
+                            </form:form>
+                                <form:form method="POST" action="${facebookSignInUrl}">
+                                <input type="hidden" name="_csrf" value="${_csrf.token}"></input>
+                                <button type="submit"> Facebook sign in </button>
+                            </form:form>
                         </div>
                         <div id="forgot-pwd" class="form-action hide">
                             <div class="login-header">
@@ -70,8 +87,9 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
+
+
     <!-- Container Fluid ends -->
 </template:loggedOut>

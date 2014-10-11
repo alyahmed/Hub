@@ -23,18 +23,20 @@ import org.springframework.social.facebook.api.Facebook;
 import org.springframework.social.facebook.connect.FacebookConnectionFactory;
 import org.springframework.social.twitter.api.Twitter;
 import org.springframework.social.twitter.connect.TwitterConnectionFactory;
-import ca.ahmedaly.site.social.SocialConnectController;
-import ca.ahmedaly.site.social.facebook.PostToWallAfterConnectInterceptor;
-import ca.ahmedaly.site.social.twitter.TweetAfterConnectInterceptor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.social.connect.web.ConnectController;
 import org.springframework.social.google.api.Google;
 import org.springframework.social.google.connect.GoogleConnectionFactory;
+import org.springframework.social.instagram.api.Instagram;
+import org.springframework.social.instagram.connect.InstagramConnectionFactory;
 import org.springframework.social.linkedin.api.LinkedIn;
 import org.springframework.social.linkedin.connect.LinkedInConnectionFactory;
+import org.springframework.social.reddit.api.Reddit;
+import org.springframework.social.reddit.connect.RedditConnectionFactory;
+import org.springframework.social.tumblr.api.Tumblr;
+import org.springframework.social.tumblr.connect.TumblrConnectionFactory;
 
 @Configuration
 @EnableSocial
@@ -44,14 +46,6 @@ public class SocialContext implements SocialConfigurer {
     @Inject
     private DataSource dataSource;
 
-    /*
-     * Social Configurer implementation methods
-     * 
-     * @see org.springframework.social.config.annotation.SocialConfigurer#
-     * addConnectionFactories
-     * (org.springframework.social.config.annotation.ConnectionFactoryConfigurer
-     * , org.springframework.core.env.Environment)
-     */
     //Social Media API keys
     @Value("${twitter.consumer.key}")
     private String TWITTER_CONSUMER_KEY;
@@ -75,24 +69,60 @@ public class SocialContext implements SocialConfigurer {
     private String GOOGLE_CLIENT_SECRET;
     @Value("${google.scope}")
     private String GOOGLE_SCOPE;
-
+    
+    
+    @Value("${instagram.client.id}")
+    private String INSTAGRAM_CLIENT_ID;
+    
+    @Value("${instagram.client.secret}")
+    private String INSTAGRAM_CLIENT_SECRET;
+    
+    @Value("${instagram.scope}")
+    private String INSTAGRAM_SCOPE;
+    
+    
+    @Value("${tumblr.consumer.id}")
+    private String TUMBLR_CONSUMER_ID;
+    @Value("${tumblr.consumer.secret}")
+    private String TUMBLR_CONSUMER_SECRET;
+    
+    
+    @Value("${reddit.client.id}")
+    private String REDDIT_CLIENT_ID;
+    @Value("${reddit.client.secret}")
+    private String REDDIT_CLIENT_SECRET;
+    
     @Override
     public void addConnectionFactories(ConnectionFactoryConfigurer cfConfig,
             Environment env) {
 
         cfConfig.addConnectionFactory(new TwitterConnectionFactory(
                 TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET));
+        
         FacebookConnectionFactory facebookConnectionFactory = new FacebookConnectionFactory(
                 FACEBOOK_APP_ID, FACBOOK_APP_SECRET);
         
-//        facebookConnectionFactory.setScope(FACEBOOK_SCOPE);
+        TumblrConnectionFactory tumblrConnectionFactory = 
+                new TumblrConnectionFactory(TUMBLR_CONSUMER_ID, TUMBLR_CONSUMER_SECRET);
+        
         LinkedInConnectionFactory linkedinConnectionFactory = new LinkedInConnectionFactory(LINKEDIN_APP_KEY, LINKEDIN_APP_SECRET);
         linkedinConnectionFactory.setScope(LINKEDIN_SCOPE);
+        InstagramConnectionFactory instagramConnectionFactory
+                = new InstagramConnectionFactory(INSTAGRAM_CLIENT_ID, INSTAGRAM_CLIENT_SECRET);
+        instagramConnectionFactory.setScope(INSTAGRAM_SCOPE);
+            
         GoogleConnectionFactory googleConnectionFactory = new GoogleConnectionFactory(GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET);
         googleConnectionFactory.setScope(GOOGLE_SCOPE);
+        
+        RedditConnectionFactory redditConnectionFactory = new RedditConnectionFactory(REDDIT_CLIENT_ID, REDDIT_CLIENT_SECRET);
+        
+        
         cfConfig.addConnectionFactory(facebookConnectionFactory);
         cfConfig.addConnectionFactory(linkedinConnectionFactory);
         cfConfig.addConnectionFactory(googleConnectionFactory);
+        cfConfig.addConnectionFactory(instagramConnectionFactory);
+        cfConfig.addConnectionFactory(tumblrConnectionFactory);
+        cfConfig.addConnectionFactory(redditConnectionFactory);
     }
 
     @Override
@@ -101,6 +131,7 @@ public class SocialContext implements SocialConfigurer {
         return new JdbcUsersConnectionRepository(dataSource,
                 connectionFactoryLocator, Encryptors.noOpText());
     }
+
 
     @Override
     public UserIdSource getUserIdSource() {
@@ -114,17 +145,6 @@ public class SocialContext implements SocialConfigurer {
                 return authentication.getName();
             }
         };
-    }
-
-    @Bean
-    public ConnectController connectController(
-            ConnectionFactoryLocator connectionFactoryLocator,
-            ConnectionRepository connectionRepository) {
-
-        SocialConnectController controller = new SocialConnectController(connectionFactoryLocator, connectionRepository);
-        controller.addInterceptor(new TweetAfterConnectInterceptor());
-        controller.addInterceptor(new PostToWallAfterConnectInterceptor());
-        return controller;
     }
 
     @Bean
@@ -165,6 +185,28 @@ public class SocialContext implements SocialConfigurer {
     @Scope(value = "request", proxyMode = ScopedProxyMode.INTERFACES)
     public Google google(ConnectionRepository repository) {
         Connection<Google> connection = repository.findPrimaryConnection(Google.class);
+        return connection != null ? connection.getApi() : null;
+    }
+
+    @Bean
+    @Scope(value = "request", proxyMode = ScopedProxyMode.INTERFACES)
+    public Instagram instagram(ConnectionRepository repository) {
+        Connection<Instagram> connection = repository.findPrimaryConnection(Instagram.class);
+        return connection != null ? connection.getApi() : null;
+    }
+    
+    @Bean
+    @Scope(value = "request", proxyMode = ScopedProxyMode.INTERFACES)
+    public Tumblr tumblr(ConnectionRepository repository) {
+        Connection<Tumblr> connection = repository.findPrimaryConnection(Tumblr.class);
+        return connection != null ? connection.getApi() : null;
+    }
+    
+    @Bean
+    @Scope(value = "request", proxyMode = ScopedProxyMode.INTERFACES)
+    public Reddit reddit(ConnectionRepository repository)
+    {
+        Connection<Reddit> connection = repository.findPrimaryConnection(Reddit.class);
         return connection != null ? connection.getApi() : null;
     }
 

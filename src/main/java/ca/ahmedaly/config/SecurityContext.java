@@ -26,6 +26,7 @@ import org.springframework.social.security.SocialUserDetailsService;
 
 import ca.ahmedaly.site.UserService;
 import ca.ahmedaly.site.social.SimpleSocialUsersDetailService;
+import org.springframework.social.security.SpringSocialConfigurer;
 
 @Configuration
 @EnableWebMvcSecurity
@@ -65,39 +66,45 @@ public class SecurityContext extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity security) {
         security.ignoring().antMatchers("/resource/**", "/favicon.ico ",
-                "/signup/**", "/user/register/**", "/auth/**", "/disconnect/facebook");
+                "/signup/**", "/user/register/**", "/auth/**", "/disconnect/facebook", "/signin/**");
     }
 
     @Override
     protected void configure(HttpSecurity security) throws Exception {
         security
-                .authorizeRequests()
-                .antMatchers("/session/list")
-                .hasAuthority("VIEW_USER_SESSIONS")
-                .anyRequest().authenticated()
-                .and().formLogin()
-                .loginPage("/login").failureUrl("/login?loginFailed")
-                .defaultSuccessUrl("/connect")
-                .usernameParameter("username")
-                .passwordParameter("password")
-                .permitAll()
-                .and().logout()
-                .logoutUrl("/logout").logoutSuccessUrl("/login?loggedOut")
-                .invalidateHttpSession(true).deleteCookies("JSESSIONID")
-                .permitAll()
-                .and().sessionManagement()
-                .sessionFixation().changeSessionId()
-                .maximumSessions(1).maxSessionsPreventsLogin(true)
-                .sessionRegistry(this.sessionRegistryImpl())
-                .and().and().csrf()
-                .requireCsrfProtectionMatcher((r) -> {
-                    String m = r.getMethod();
-                    return !r.getServletPath().startsWith("/services/")
-                    && ("POST".equals(m) || "PUT".equals(m)
-                    || "DELETE".equals(m) || "PATCH".equals(m));
-                }).and()
-                .authorizeRequests()
-                .antMatchers("/signup/**", "/disconnect/facebook").permitAll();
+                    .authorizeRequests()
+                    .antMatchers("/session/list")
+                    .hasAuthority("VIEW_USER_SESSIONS")
+                    .anyRequest().authenticated()
+                .and()
+                    .formLogin()
+                    .loginPage("/login").failureUrl("/login?loginFailed")
+                    .defaultSuccessUrl("/connect")
+                    .usernameParameter("username")
+                    .passwordParameter("password")
+                    .permitAll()
+                .and()
+                    .logout()
+                    .logoutUrl("/logout").logoutSuccessUrl("/login?loggedOut")
+                    .invalidateHttpSession(true).deleteCookies("JSESSIONID")
+                    .permitAll()
+                .and()
+                    .sessionManagement()
+                    .sessionFixation().changeSessionId()
+                    .maximumSessions(1).maxSessionsPreventsLogin(true)
+                    .sessionRegistry(this.sessionRegistryImpl())
+                .and().and()
+                    .csrf()
+                    .requireCsrfProtectionMatcher((r) -> {
+                        String m = r.getMethod();
+                        return !r.getServletPath().startsWith("/services/")
+                        && ("POST".equals(m) || "PUT".equals(m)
+                        || "DELETE".equals(m) || "PATCH".equals(m));
+                    }).and()
+                    .authorizeRequests()
+                    .antMatchers("/signup/**", "/disconnect/facebook", "/signin/**").permitAll().
+                and()
+                    .apply(new SpringSocialConfigurer());
     }
 
     @Bean

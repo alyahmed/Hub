@@ -15,6 +15,9 @@
         <spring:message code="nav.item.social.timeline" var="timelineTitle" />
         <spring:message code="nav.item.social.google" var="googleTitle" />
         <spring:message code="nav.item.list.session" var="listSessions" />
+        <spring:message code="nav.item.social.instagram" var="instagramTitle" />
+        <spring:message code="nav.item.social.tumblr" var="tumblrTitle" />
+        <spring:message code="nav.item.social.reddit" var="redditTitle" />
 
         <security:authentication var="userName" property="principal.username" />
 
@@ -28,6 +31,9 @@
         <c:url var="facebookProfileUrl" value="/connect/facebook" /> <!-- Check out Facebook Profile or Status-->
         <c:url var="linkedinProfileUrl" value="/connect/linkedin" /> <!-- Check out Twitter Profile or Status-->
         <c:url var="googleProfileUrl" value="/connect/google" />
+        <c:url var="instagramProfileUrl" value="/connect/instagram" />
+        <c:url var="tumblrProfileUrl" value="/connect/tumblr" />
+        <c:url var="redditProfileUrl" value="/connect/reddit" /> <!-- Reddit Profile -->
         <c:url var="timelineUrl" value="/timeline" /> <!-- Timeline -->
         <c:url var="profilePictureUrl" value="/resource/img/user4.jpg" /> 
         <c:url var="settingsUrl" value="/user/settings" />
@@ -124,9 +130,23 @@
                     <li><a href="${linkedinProfileUrl}">
                             <i class="fa fa-linkedin"> </i>  ${linkedinTitle}</a>
                     </li>
+                    <!-- Google Specific Links -->
                     <li><a href="${googleProfileUrl}">
                             <i class="fa fa-google"> </i>  ${googleTitle}</a>
                     </li>
+                    <!-- Instagram Specific Links -->
+                    <li><a href="${instagramProfileUrl}">
+                            <i class="fa fa-instagram"> </i>  ${instagramTitle}</a>
+                    </li>
+                    <!-- Tumblr Specific Links -->
+                    <li><a href="${tumblrProfileUrl}">
+                            <i class="fa fa-tumblr"> </i>  ${tumblrTitle}</a>
+                    </li>
+                    <!-- Reddit Specific Links -->
+                    <li><a href="${redditProfileUrl}">
+                            <i class="fa fa-reddit"> </i>  ${redditTitle}</a>
+                    </li>
+
                 </ul>
             </div>
             <!-- Menu End -->

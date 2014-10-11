@@ -3,9 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ca.ahmedaly.site;
+package ca.ahmedaly.site.controller;
 
 import ca.ahmedaly.config.annotation.WebController;
+import ca.ahmedaly.site.ConnectionService;
+import ca.ahmedaly.site.UserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

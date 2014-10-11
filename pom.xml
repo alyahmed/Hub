@@ -33,8 +33,9 @@
         <spring.social.facebook.version>2.0.0.M1</spring.social.facebook.version>
         <spring.social.twitter.version>1.1.0.RELEASE</spring.social.twitter.version>
         <spring.social.linkedin.version>1.0.0.RELEASE </spring.social.linkedin.version>
-        <spring.social.instagram.version>1.0.0.BUILD </spring.social.instagram.version>
+        <spring.social.instagram.version>1.0.0.BUILD-SNAPSHOT</spring.social.instagram.version>
         <spring.social.google.version>1.0.0.RELEASE</spring.social.google.version>
+        <spring.social.tumblr.version>1.1.0.M1</spring.social.tumblr.version>
         <!-- PERSISTENCE -->
         <!-- Hibernate -->
         <hibernate.validator.version>5.1.0.Beta1</hibernate.validator.version>
@@ -42,6 +43,7 @@
         <mysql.connector.version>5.1.6</mysql.connector.version>
         <!-- LIBRARIES -->
         <jackson.version>2.3.1</jackson.version>
+        <jackson.legacy.version>1.9.2</jackson.legacy.version>
         <apache.httpcomponents.version>4.3.2</apache.httpcomponents.version>
         <commons-pool.version>1.6</commons-pool.version>
         <commons-dbcp.version>1.2.2</commons-dbcp.version>
@@ -64,12 +66,16 @@
         </profile>
     </profiles>
     
-    
     <repositories>
         <repository>
             <id>repository.springsource.snapshot</id>
             <name>SpringSource Milestone Repository</name>
             <url>http://repo.springsource.org/milestone</url>
+        </repository>
+        
+        <repository>
+            <id>sdouglass-releases</id>
+            <url>https://raw.github.com/sdouglass/sdouglass-maven-repo/master/releases</url>
         </repository>
     </repositories>
 
@@ -182,14 +188,22 @@
             <version>${jackson.version}</version>
             <scope>compile</scope>
         </dependency>
-
+        
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-api</artifactId>
             <version>${log4j.version}</version>
             <scope>compile</scope>
         </dependency>
-
+        
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-mapper-asl</artifactId>
+            <version>1.8.5</version>
+        </dependency>
+        
+        
+        
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
@@ -259,7 +273,7 @@
             <version>${spring.framework.version}</version>
             <scope>compile</scope>
         </dependency>
-
+        
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-orm</artifactId>
@@ -480,6 +494,21 @@
             <version>${spring.social.google.version}</version>
         </dependency>
         
+        <!-- Spring Social Instagram Extension -->
+        
+        <dependency>
+            <groupId>org.springframework.social</groupId>
+            <artifactId>spring-social-instagram</artifactId>
+            <version>${spring.social.instagram.version}</version>
+        </dependency>
+        
+        <!-- Spring Social Tumblr Extension -->
+        <dependency>
+            <groupId>org.springframework.social</groupId>
+            <artifactId>spring-social-tumblr</artifactId>
+            <version>${spring.social.tumblr.version}</version>
+        </dependency>
+        
         <!-- TESTING DEPENDENCIES -->
         <!-- Unit Testing Framework -->
         <dependency>
@@ -515,7 +544,11 @@
             <version>${spring.framework.version}</version>
             <scope>test</scope>
         </dependency>
-        
+        <dependency>
+            <groupId>org.springframework.social</groupId>
+            <artifactId>spring-social-reddit</artifactId>
+            <version>1.0</version>
+        </dependency>
     </dependencies>
     
     <build>

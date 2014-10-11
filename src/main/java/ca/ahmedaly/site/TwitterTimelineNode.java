@@ -11,13 +11,11 @@ package ca.ahmedaly.site;
  */
 public class TwitterTimelineNode extends TimelineNode {
     
-    
     public TwitterTimelineNode(String title, String content, String dateCreated){
         setContent(content);
         setDateCreated(dateCreated);
         setTitle(title);
         setProviderId("twitter");
     }
-    
     
 }

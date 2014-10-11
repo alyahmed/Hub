@@ -156,6 +156,7 @@ public class WebServletContext extends WebMvcConfigurerAdapter
         super.addInterceptors(registry);
 
         registry.addInterceptor(new LocaleChangeInterceptor());
+        
     }
 
     @Bean
