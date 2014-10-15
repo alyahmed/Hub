@@ -1,4 +1,4 @@
-package ca.ahmedaly.site;
+package ca.ahmedaly.site.controller;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

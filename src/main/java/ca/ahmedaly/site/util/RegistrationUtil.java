@@ -15,32 +15,22 @@ public class RegistrationUtil {
 	private static final Logger log = LogManager.getLogger(RegistrationUtil.class);
 	
 	public static UserPrincipal createUser(SignUpForm form){
-		
-		UserPrincipal user = new UserPrincipal();
-		
-		// Set User Details
-		user.setUsername(form.getUsername());
-		user.setFirstName(form.getFirstName());
-		user.setLastName(form.getLastName());
-		
-		// Set Security Permission
-		user.setAccountNonExpired(true);
-		user.setAccountNonLocked(true);
-		user.setEnabled(true);
-		user.setCredentialsNonExpired(true);
-		
-		// Set Authorization Permissions
-		user.setAuthorities(defaultUserAuthorities());
-		
-		log.info("Creating New UserPrincipal: " + user);
-		
+		UserPrincipal user = UserPrincipal.getBuilder()
+                        .username(form.getUsername())
+                        .firstName(form.getFirstName())
+                        .lastName(form.getLastName())
+                        .accountNonExpired(true)
+                        .accountNonLocked(true)
+                        .credentialsNonExpired(true)
+                        .enabled(true)
+                        .authorities(defaultUserAuthorities())
+                        .build();
 		return user;
 	}
 	
 	public static Set<UserAuthority> defaultUserAuthorities(){
 		
 		Set<UserAuthority> authorities = new HashSet<>();
-		
 		authorities.add(new UserAuthority("VIEW_TICKET"));
 		authorities.add(new UserAuthority("VIEW_COMMENT"));
 		authorities.add(new UserAuthority("VIEW_TICKETS"));

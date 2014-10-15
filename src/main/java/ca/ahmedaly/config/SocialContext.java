@@ -91,7 +91,8 @@ public class SocialContext implements SocialConfigurer {
     private String REDDIT_CLIENT_ID;
     @Value("${reddit.client.secret}")
     private String REDDIT_CLIENT_SECRET;
-    
+    @Value("${reddit.scope}")
+    private String REDDIT_SCOPE;
     @Override
     public void addConnectionFactories(ConnectionFactoryConfigurer cfConfig,
             Environment env) {
@@ -115,7 +116,7 @@ public class SocialContext implements SocialConfigurer {
         googleConnectionFactory.setScope(GOOGLE_SCOPE);
         
         RedditConnectionFactory redditConnectionFactory = new RedditConnectionFactory(REDDIT_CLIENT_ID, REDDIT_CLIENT_SECRET);
-        
+        redditConnectionFactory.setScope(REDDIT_SCOPE);
         
         cfConfig.addConnectionFactory(facebookConnectionFactory);
         cfConfig.addConnectionFactory(linkedinConnectionFactory);

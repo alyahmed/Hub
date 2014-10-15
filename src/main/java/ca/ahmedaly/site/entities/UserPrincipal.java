@@ -224,4 +224,68 @@ public class UserPrincipal implements UserDetails, CredentialsContainer, Cloneab
     {
         return this.username;
     }
+    
+    public static Builder getBuilder(){
+        return new Builder();
+    }
+    
+    
+    public static class Builder {
+        
+        private UserPrincipal user;
+        
+        public Builder(){
+            user = new UserPrincipal();
+        }
+        
+        public Builder username(String username){
+            user.username = username;
+            return this;
+        }
+        
+        public Builder hashedPassword(byte[] hashedPassword){
+            user.hashedPassword = hashedPassword;
+            return this;
+        }
+        
+        public Builder authorities(Set<UserAuthority> authorities){
+            user.authorities = authorities;
+            return this;
+        }
+        
+        public Builder firstName(String firstName){
+            user.firstName = firstName;
+            return this;
+        }
+        
+        public Builder lastName(String lastName){
+            user.lastName = lastName;
+            return this;
+        }
+        
+        public Builder accountNonExpired(boolean accountNonExpired){
+            user.accountNonExpired = accountNonExpired;
+            return this;
+        }
+        
+        public Builder accountNonLocked(boolean accountNonLocked){
+            user.accountNonLocked = accountNonLocked;
+            return this;
+        }
+        
+        public Builder credentialsNonExpired(boolean credentialsNonExpired){
+            user.credentialsNonExpired = credentialsNonExpired;
+            return this;
+        }
+        
+        public Builder enabled(boolean enabled){
+            user.enabled = enabled;
+            return this;
+        }
+        
+        public UserPrincipal build(){
+            return user;
+        }
+        
+    }
 }

@@ -4,12 +4,20 @@
     <c:url var="twitterProfileUrl" value="/twitter" /> <!-- Check out Twitter Profile -->
     <c:url var="facebookProfileUrl" value="/facebook" /> <!-- Check out Facebook Profile -->
     <c:url var="linkedinProfileUrl" value="/linkedin" /> <!-- Check out Twitter Profile -->
-    <c:url var="googleProfileUrl" value="/google" /> <!-- Check out Instagram Profile -->
+    <c:url var="googleProfileUrl" value="/google" />  <!-- Check out Google Profile -->
+    <c:url var="instagramProfileUrl" value="/instagram" /> <!-- Check out Instagram Profile -->
     <c:url var="profilePictureUrl" value="/resource/img/user4.jpg" /> 
+    <c:url var="tumblrProfileUrl" value="/tumblr" />
+    <c:url var="redditProfileUrl" value="/reddit" />
+    
     <c:url var="twitterConnectUrl" value="/connect/twitter"  />
     <c:url var="linkedinConnectUrl" value="/connect/linkedin"  />
     <c:url var="facebookConnectUrl" value="/connect/facebook" />
-    <c:url var="googleConnectUrl" value="/connect/google" /> <!-- Check out Instagram Profile-->
+    <c:url var="instagramConnectUrl" value="/connect/instagram" /> 
+    <c:url var="googleConnectUrl" value="/connect/google" /> <!-- Check out Google Profile-->
+    <c:url var="tumblrConnectUrl" value="/connect/tumblr" /> 
+    <c:url var="redditConnectUrl" value="/connect/reddit" />
+
 
     <div class="current-stats">
         <div class="row">
@@ -54,14 +62,14 @@
             <div class="col-lg-2 col-md-4 col-sm-4 col-xs-6">
                 <div class="linkedin-bg center-align-text">
                     <div class="spacer-xs">
-                        <i class="fa fa-linkedin fa-2x"></i>
-                        <small class="text-white">LinkedIn</small>
+                        <i class="fa fa-instagram fa-2x"></i>
+                        <small class="text-white">Instagram</small>
                         <c:choose>
-                            <c:when test="${!empty connectionMap['linkedin']}">
-                                <h6 class="no-margin no-padding text-white"> <a href="${linkedinProfileUrl}" class="label label-success"> View Profile </a> </h6>
+                            <c:when test="${!empty connectionMap['instagram']}">
+                                <h6 class="no-margin no-padding text-white"> <a href="${instagramProfileUrl}" class="label label-success"> View Profile </a> </h6>
                             </c:when>
                             <c:otherwise>
-                                <form:form action="${linkedinConnectUrl}" method="POST">
+                                <form:form action="${instagramConnectUrl}" method="POST">
                                     <input type="hidden" name="_csrf" value="${_csrf.token}" />
                                     <button type="submit" class="btn-danger">Connect</button>
                                 </form:form>
@@ -71,7 +79,7 @@
                 </div>
             </div>
             <div class="col-lg-2 col-md-4 col-sm-4 col-xs-6">
-                <div class="linkedin-bg center-align-text">
+                <div class="danger-bg center-align-text">
                     <div class="spacer-xs">
                         <i class="fa fa-google-plus fa-2x"></i>
                         <small class="text-white">Google</small>
@@ -89,6 +97,47 @@
                     </div>
                 </div>
             </div>
+
+            <div class="col-lg-2 col-md-4 col-sm-4 col-xs-6">
+                <div class="success-bg center-align-text">
+                    <div class="spacer-xs">
+                        <i class="fa fa-google-plus fa-2x"></i>
+                        <small class="text-white">Tumblr</small>
+                        <c:choose>
+                            <c:when test="${!empty connectionMap['tumblr']}">
+                                <h6 class="no-margin no-padding text-white"> <a href="${tumblrProfileUrl}" class="label label-success"> View Profile </a> </h6>
+                            </c:when>
+                            <c:otherwise>
+                                <form:form action="${tumblrConnectUrl}" method="POST">
+                                    <input type="hidden" name="_csrf" value="${_csrf.token}" />
+                                    <button type="submit" class="btn-danger">Connect</button>
+                                </form:form>
+                            </c:otherwise>
+                        </c:choose>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-2 col-md-4 col-sm-4 col-xs-6">
+                <div class="brown-bg center-align-text">
+                    <div class="spacer-xs">
+                        <i class="fa fa-reddit fa-2x"></i>
+                        <small class="text-white">Reddit</small>
+                        <c:choose>
+                            <c:when test="${!empty connectionMap['reddit']}">
+                                <h6 class="no-margin no-padding text-white"> <a href="${redditProfileUrl}" class="label label-success"> View Profile </a> </h6>
+                            </c:when>
+                            <c:otherwise>
+                                <form:form action="${redditConnectUrl}" method="POST">
+                                    <input type="hidden" name="_csrf" value="${_csrf.token}" />
+                                    <button type="submit" class="btn-danger">Connect</button>
+                                </form:form>
+                            </c:otherwise>
+                        </c:choose>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 

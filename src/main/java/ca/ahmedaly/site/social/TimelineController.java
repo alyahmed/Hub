@@ -31,16 +31,12 @@ public class TimelineController {
     
     @RequestMapping(value = {""}, method = RequestMethod.GET)
     public String showTimeline(Model model) {
-        
         try {
-            LOG.info("Getting Nodes from TimlineService");
             List<TimelineNode> nodes = timelineService.getNodes(repository);
-            LOG.info("Added Nodes " + nodes.toString() + " to model");
             model.addAttribute("nodes", nodes);
-                
         } catch (NoUserConnectionsException e) {
             model.addAttribute("connectionsEmpty", true);
-            LOG.info("No active User Connections found");
+            LOG.debug(e.getLocalizedMessage());
         }
         return "timeline/timeline";
         

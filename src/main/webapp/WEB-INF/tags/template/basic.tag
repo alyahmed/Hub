@@ -11,7 +11,6 @@
         <spring:message code="nav.item.social.dashboard" var="socialDashboard" />
         <spring:message code="nav.item.social.twitter" var="twitterTitle" />
         <spring:message code="nav.item.social.facebook" var="facebookTitle" />
-        <spring:message code="nav.item.social.linkedin" var="linkedinTitle"/>
         <spring:message code="nav.item.social.timeline" var="timelineTitle" />
         <spring:message code="nav.item.social.google" var="googleTitle" />
         <spring:message code="nav.item.list.session" var="listSessions" />
@@ -125,10 +124,6 @@
                     <!-- Facebook Specific Links -->
                     <li><a href="${facebookProfileUrl}">
                             <i class="fa fa-facebook"></i>  ${facebookTitle}</a>
-                    </li>
-                    <!-- Linkedin Specific Links -->
-                    <li><a href="${linkedinProfileUrl}">
-                            <i class="fa fa-linkedin"> </i>  ${linkedinTitle}</a>
                     </li>
                     <!-- Google Specific Links -->
                     <li><a href="${googleProfileUrl}">

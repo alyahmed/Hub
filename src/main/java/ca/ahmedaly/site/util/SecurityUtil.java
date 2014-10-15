@@ -1,6 +1,6 @@
 package ca.ahmedaly.site.util;
 
-import ca.ahmedaly.site.SignUpController;
+import ca.ahmedaly.site.controller.SignUpController;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 

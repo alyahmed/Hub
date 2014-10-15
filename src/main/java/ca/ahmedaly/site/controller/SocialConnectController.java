@@ -51,9 +51,11 @@ public class SocialConnectController implements InitializingBean {
 
     private final ConnectionRepository connectionRepository;
 
-    private final MultiValueMap<Class<?>, ConnectInterceptor<?>> connectInterceptors = new LinkedMultiValueMap<Class<?>, ConnectInterceptor<?>>();
+    private final MultiValueMap<Class<?>, ConnectInterceptor<?>> connectInterceptors
+            = new LinkedMultiValueMap<Class<?>, ConnectInterceptor<?>>();
 
-    private final MultiValueMap<Class<?>, DisconnectInterceptor<?>> disconnectInterceptors = new LinkedMultiValueMap<Class<?>, DisconnectInterceptor<?>>();
+    private final MultiValueMap<Class<?>, DisconnectInterceptor<?>> disconnectInterceptors
+            = new LinkedMultiValueMap<Class<?>, DisconnectInterceptor<?>>();
 
     private SocialConnectionHelper connectSupport;
 
@@ -135,7 +137,9 @@ public class SocialConnectController implements InitializingBean {
 
     @RequestMapping(value = "/{providerId}", method = RequestMethod.POST)
     public RedirectView connect(@PathVariable String providerId, NativeWebRequest request) {
+        logger.info("Connecting to " + providerId);
         ConnectionFactory<?> connectionFactory = connectionFactoryLocator.getConnectionFactory(providerId);
+        logger.info("Obtained ConnectionFactory for " + providerId);
         MultiValueMap<String, String> parameters = new LinkedMultiValueMap<String, String>();
         preConnect(connectionFactory, parameters, request);
         try {
@@ -167,14 +171,22 @@ public class SocialConnectController implements InitializingBean {
             logger.info(request.getParameter("code"));
             logger.info(request.getParameterNames());
             OAuth2ConnectionFactory<?> connectionFactory = (OAuth2ConnectionFactory<?>) connectionFactoryLocator.getConnectionFactory(providerId);
-            
+
+            logger.info("Completing conneciton for " + providerId);
             if (providerId.equals("instagram")) {
                 Connection<?> connection = connectSupport.completeConnectionInstagram(connectionFactory, request);
                 addConnection(connection, connectionFactory, request);
+
+            } else if (providerId.equals("reddit")) {
+                Connection<?> connection = connectSupport.completeConnectionReddit(connectionFactory, request);
+                addConnection(connection, connectionFactory, request);
+
             } else {
                 Connection<?> connection = connectSupport.completeConnection(connectionFactory, request);
                 addConnection(connection, connectionFactory, request);
+
             }
+            logger.info("Adding connection [" + providerId + "] to database");
         } catch (Exception e) {
             sessionStrategy.setAttribute(request, PROVIDER_ERROR_ATTRIBUTE, e);
             logger.warn("Exception while handling OAuth2 callback (" + e.getMessage() + "). Redirecting to " + providerId + " connection status page.");

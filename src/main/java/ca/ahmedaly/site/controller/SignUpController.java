@@ -1,4 +1,4 @@
-package ca.ahmedaly.site;
+package ca.ahmedaly.site.controller;
 
 import java.util.Map;
 
@@ -17,6 +17,8 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import ca.ahmedaly.config.annotation.WebController;
+import ca.ahmedaly.site.SignUpForm;
+import ca.ahmedaly.site.UserService;
 import ca.ahmedaly.site.entities.UserPrincipal;
 import ca.ahmedaly.site.util.RegistrationUtil;
 import org.springframework.web.servlet.view.RedirectView;

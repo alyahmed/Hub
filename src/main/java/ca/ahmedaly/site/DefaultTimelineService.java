@@ -47,7 +47,7 @@ public class DefaultTimelineService implements TimelineService {
         }
         
         else {
-            nodes = null;
+            throw new NoUserConnectionsException("No Social Accounts attached");
         }
         return nodes;
     }
@@ -57,11 +57,12 @@ public class DefaultTimelineService implements TimelineService {
     
     private boolean emptyConnections(ConnectionRepository repository){
         
-        if (repository.findAllConnections().isEmpty()){
-            LOG.debug("No Connections Found for User");
-            return true;
+        MultiValueMap<String, Connection<?>> allConncetions = repository.findAllConnections();
+        
+        for (Map.Entry<String, List<Connection<?>>> connection : allConncetions.entrySet()) {
+            if (connection.getValue().size() > 0) return false;
         }
-        return false;
+        return true;
     }
     
     
