@@ -12,7 +12,7 @@ import java.util.logging.Logger;
  *
  * @author ahmed
  */
-public class FacebookTimelineNode extends TimelineNode {
+public class FacebookTimelineNode extends TimelineNode implements FacebookNode {
 
     public FacebookTimelineNode(String title, String content, String dateCreated) {
         setContent(content);

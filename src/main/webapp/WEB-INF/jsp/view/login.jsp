@@ -18,78 +18,47 @@
     <spring:message code="field.signUp.password" var="password"/>
     <spring:message code="field.signUp.passwordVerification" var="passwordVerify" />
     <spring:message code="field.signUp.submit" var="submit" />
-    
-    
-    
+
+
+
     <c:url value="/signup" var="signUpUrl"></c:url>
     <c:url value="/signin/instagram" var="instagramSignInUrl"></c:url>
     <c:url value="/signin/twitter" var="twitterSignInUrl"></c:url>
     <c:url value="/signin/facebook" var="facebookSignInUrl"></c:url>
-        <!-- Container Fluid starts -->
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-push-4 col-md-4 col-sm-push-3 col-sm-6 col-sx-12">
-                    <div class="login-container">
-                        <div class="login-wrapper animated flipInY">
-                            <div id="login" class="show">
-                                <div class="login-header">
-                                    <h4>Sign In To Your Account</h4>
-                                </div>
-                            <form:form method="POST" modelAttribute="loginForm">
-                                <div class="form-group has-feedback">
-                                    <form:label cssClass="control-label" for="userName" path="username"> ${usernameLabel}</form:label>
-                                    <form:input path="username" type="text" id="userName"
-                                                class="form-control" placeholder="Username"
-                                                required="required"></form:input>
-                                        <i class="fa fa-user text-info form-control-feedback"></i>
-                                    </div>
-                                    <div class="form-group has-feedback">
-                                    <form:label cssClass="control-label" for="passWord" path="password">${passwordLabel}</form:label>
-                                    <form:input path="password" type="password" id="passWord"
-                                                class="form-control" placeholder="**********"
-                                                required="required"></form:input>
-                                        <i class="fa fa-key text-danger form-control-feedback"></i>
-                                    </div>
-                                    <input type="submit" value="${forumSubmit}" class="btn btn-danger btn-lg btn-block">
-                            </form:form>
-                            <form:form method="POST" action="${instagramSignInUrl}">
-                                <input type="hidden" name="_csrf" value="${_csrf.token}"></input>
-                                <button type="submit"> instagram sign in </button>
-                            </form:form>
-                                <form:form method="POST" action="${twitterSignInUrl}">
-                                <input type="hidden" name="_csrf" value="${_csrf.token}"></input>
-                                <button type="submit"> Twitter sign in </button>
-                            </form:form>
-                                <form:form method="POST" action="${facebookSignInUrl}">
-                                <input type="hidden" name="_csrf" value="${_csrf.token}"></input>
-                                <button type="submit"> Facebook sign in </button>
-                            </form:form>
-                        </div>
-                        <div id="forgot-pwd" class="form-action hide">
-                            <div class="login-header">
-                                <h4>Reset your Password</h4>
-                            </div>
-                            <form action="index.html">
-                                <div class="form-group has-feedback">
-                                    <label class="control-label" for="password3">Password</label>
-                                    <input type="text" class="form-control" id="password3">
-                                    <i class="fa fa-key form-control-feedback"></i>
-                                </div>
-                                <div class="form-group has-feedback">
-                                    <label class="control-label" for="password4">Confirm password</label>
-                                    <input type="text" class="form-control" id="password4">
-                                    <i class="fa fa-key form-control-feedback"></i>
-                                </div>
-                                <input type="submit" value="Reset" class="btn btn-danger btn-lg btn-block">
-                            </form>
-                            <a href="#register">Don't have an account? <span class="text-danger">Sign Up</span></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    <!-- Container Fluid ends -->
+    <form:form method="POST" modelAttribute="loginForm" autocomplete="OFF">
+        <h3 class="black_bg">
+            <img src="<c:url value="/resource/img/logo.png" />" alt="">
+        </h3>
+        <p>
+            <form:label path="username" style="margin-bottom:0px;" for="username" class="uname"> <i class="livicon" data-name="user" data-size="16" data-loop="true" data-c="#3c8dbc" data-hc="#3c8dbc"></i>
+                ${usernameLabel}
+            </form:label>
+            <form:input path="username" id="username" name="username" type="text" placeholder="username" required="required"></form:input>
+            </p>
+            <p>
+            <form:label cssClass="youpasswd" for="password" path="password">
+                <i class="livicon" data-name="key" data-size="16" data-loop="true" data-c="#3c8dbc" data-hc="#3c8dbc"></i>
+                ${passwordLabel}
+            </form:label>
+            <form:input path="password" type="password" id="password"
+                        placeholder="**********"
+                        required="required"></form:input>
+            </p>
+            <p class="keeplogin">
+                <input type="checkbox" name="loginkeeping" id="loginkeeping" value="loginkeeping" />
+                <label for="loginkeeping">Keep me logged in</label>
+            </p>
+            <p class="login button">
+                <input type="submit" value="${forumSubmit}" class="btn btn-success" />
+        </p>
+        <p class="change_link">
+            <a href="#toforgot">
+                <button type="button" class="btn btn-responsive botton-alignment btn-warning btn-sm">Forgot password</button>
+            </a>
+            <a href="#toregister">
+                <button type="button" class="btn btn-responsive botton-alignment btn-success btn-sm" style="float:right;">Sign up</button>
+            </a>
+        </p>
+    </form:form>
 </template:loggedOut>
+

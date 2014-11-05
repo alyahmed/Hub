@@ -173,19 +173,8 @@ public class SocialConnectController implements InitializingBean {
             OAuth2ConnectionFactory<?> connectionFactory = (OAuth2ConnectionFactory<?>) connectionFactoryLocator.getConnectionFactory(providerId);
 
             logger.info("Completing conneciton for " + providerId);
-            if (providerId.equals("instagram")) {
-                Connection<?> connection = connectSupport.completeConnectionInstagram(connectionFactory, request);
-                addConnection(connection, connectionFactory, request);
-
-            } else if (providerId.equals("reddit")) {
-                Connection<?> connection = connectSupport.completeConnectionReddit(connectionFactory, request);
-                addConnection(connection, connectionFactory, request);
-
-            } else {
-                Connection<?> connection = connectSupport.completeConnection(connectionFactory, request);
-                addConnection(connection, connectionFactory, request);
-
-            }
+            Connection<?> connection = connectSupport.completeConnection(connectionFactory, request);
+            addConnection(connection, connectionFactory, request);
             logger.info("Adding connection [" + providerId + "] to database");
         } catch (Exception e) {
             sessionStrategy.setAttribute(request, PROVIDER_ERROR_ATTRIBUTE, e);

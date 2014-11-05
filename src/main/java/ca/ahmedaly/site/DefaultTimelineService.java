@@ -53,8 +53,6 @@ public class DefaultTimelineService implements TimelineService {
     }
     
     
-    
-    
     private boolean emptyConnections(ConnectionRepository repository){
         
         MultiValueMap<String, Connection<?>> allConncetions = repository.findAllConnections();

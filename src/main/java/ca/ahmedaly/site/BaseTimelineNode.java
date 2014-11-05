@@ -16,7 +16,6 @@ public abstract class BaseTimelineNode {
     private String providerId;
     private String dateCreated;
     
-    
     public String getTitle() {
         return title;
     }

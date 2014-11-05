@@ -70,7 +70,6 @@ public class SocialContext implements SocialConfigurer {
     @Value("${google.scope}")
     private String GOOGLE_SCOPE;
     
-    
     @Value("${instagram.client.id}")
     private String INSTAGRAM_CLIENT_ID;
     
@@ -93,6 +92,13 @@ public class SocialContext implements SocialConfigurer {
     private String REDDIT_CLIENT_SECRET;
     @Value("${reddit.scope}")
     private String REDDIT_SCOPE;
+    
+    @Value("${flickr.app.key}")
+    private String FLICKR_APP_KEY;
+    
+    @Value("${flickr.app.secret}")
+    private String FLICKR_APP_SECRET;
+    
     @Override
     public void addConnectionFactories(ConnectionFactoryConfigurer cfConfig,
             Environment env) {
@@ -112,11 +118,13 @@ public class SocialContext implements SocialConfigurer {
                 = new InstagramConnectionFactory(INSTAGRAM_CLIENT_ID, INSTAGRAM_CLIENT_SECRET);
         instagramConnectionFactory.setScope(INSTAGRAM_SCOPE);
             
+        
         GoogleConnectionFactory googleConnectionFactory = new GoogleConnectionFactory(GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET);
         googleConnectionFactory.setScope(GOOGLE_SCOPE);
         
         RedditConnectionFactory redditConnectionFactory = new RedditConnectionFactory(REDDIT_CLIENT_ID, REDDIT_CLIENT_SECRET);
         redditConnectionFactory.setScope(REDDIT_SCOPE);
+        
         
         cfConfig.addConnectionFactory(facebookConnectionFactory);
         cfConfig.addConnectionFactory(linkedinConnectionFactory);
@@ -210,5 +218,7 @@ public class SocialContext implements SocialConfigurer {
         Connection<Reddit> connection = repository.findPrimaryConnection(Reddit.class);
         return connection != null ? connection.getApi() : null;
     }
+    
+    
 
 }

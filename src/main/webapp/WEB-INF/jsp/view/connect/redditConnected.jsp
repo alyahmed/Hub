@@ -1,5 +1,4 @@
 <spring:message code="title.reddit.connected" var="redditConnected" />
-<spring:message code="reddit.connected" var="redditConnectedStatus" />
 <template:basic htmlTitle="${redditConnected}"
                 bodyTitle="${redditConnected}">
     <div class="spacer"></div>

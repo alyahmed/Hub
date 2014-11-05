@@ -1,0 +1,8 @@
+.demo-container {
+	position: left;
+	height: 390px;
+}
+#placeholder {
+	width: 90%;
+	float: left;
+}

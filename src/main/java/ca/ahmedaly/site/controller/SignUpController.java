@@ -38,10 +38,7 @@ public class SignUpController {
 
     @RequestMapping(value = {"/signup"}, method = RequestMethod.GET)
     public ModelAndView showSignUpForm(WebRequest request, Map<String, Object> model) {
-
-        log.info("GET /signup ----------- Placing new SignUpForm Object in model");
         model.put("signUpForm", new SignUpForm());
-
         return new ModelAndView("/signUpForm", model);
     }
 

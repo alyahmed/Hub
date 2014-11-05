@@ -99,8 +99,8 @@ public class SocialConnectionHelper {
         logger.info("Completing Connection for OAuth2ConnectionFactory: " + connectionFactory);
         String code = request.getParameter("code");
         try {
-            logger.info("code: [" + code + "]");
-            logger.info("callbackUrl: [" + callbackUrl(request) + "]");
+            logger.debug("code: [" + code + "]");
+            logger.debug("callbackUrl: [" + callbackUrl(request) + "]");
             AccessGrant accessGrant = connectionFactory.getOAuthOperations().exchangeForAccess(code, callbackUrl(request), null);
             logger.info("accessGrant: [" + accessGrant + "]");
             return connectionFactory.createConnection(accessGrant);
@@ -108,50 +108,6 @@ public class SocialConnectionHelper {
             logger.warn("HttpClientErrorException while completing connection: " + e.getMessage());
             logger.warn("      Response body: " + e.getResponseBodyAsString());
             logger.debug(e.toString() + " Thrown");
-            throw e;
-        }
-    }
-
-    public Connection<?> completeConnectionInstagram(OAuth2ConnectionFactory<?> connectionFactory, NativeWebRequest request) {
-        if (connectionFactory.supportsStateParameter()) {
-            verifyStateParameter(request);
-        }
-
-        String code = request.getParameter("code");
-        try {
-            logger.info(code);
-            logger.info(callbackUrl(request));
-            MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-            params.add("client_id", "0212f342b6ac49868a37deba6afb445a");
-            params.add("client_secret", "4ebea6cf0c414934bdf8bcc01c01733f");
-            AccessGrant accessGrant = connectionFactory.getOAuthOperations().exchangeForAccess(code, callbackUrl(request), params);
-            logger.info(accessGrant);
-            return connectionFactory.createConnection(accessGrant);
-        } catch (HttpClientErrorException e) {
-            logger.warn("HttpClientErrorException while completing connection: " + e.getMessage());
-            logger.warn("      Response body: " + e.getResponseBodyAsString());
-            throw e;
-        }
-    }
-    
-    public Connection<?> completeConnectionReddit(OAuth2ConnectionFactory<?> connectionFactory, NativeWebRequest request) {
-        if (connectionFactory.supportsStateParameter()) {
-            verifyStateParameter(request);
-        }
-
-        String code = request.getParameter("code");
-        try {
-            logger.info(code);
-            logger.info(callbackUrl(request));
-            MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-            params.add("client_id", "jhbp4UrDCMkpDg");
-            params.add("client_secret", "mciZcOBPSuy_cvOidVt4z1EjR74");
-            AccessGrant accessGrant = connectionFactory.getOAuthOperations().exchangeForAccess(code, callbackUrl(request), params);
-            logger.info(accessGrant);
-            return connectionFactory.createConnection(accessGrant);
-        } catch (HttpClientErrorException e) {
-            logger.warn("HttpClientErrorException while completing connection: " + e.getMessage());
-            logger.warn("      Response body: " + e.getResponseBodyAsString());
             throw e;
         }
     }

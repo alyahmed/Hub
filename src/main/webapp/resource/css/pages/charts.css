@@ -1,0 +1,21 @@
+.toggler-left {
+	float: left;
+	width: 80%;
+}
+.toggler-right {
+	float: right;
+	width: 20%;
+}
+.panel-body {
+	background: #f1f1f1;
+}
+.demo-container {
+	background: #fff;
+}
+.visitors-bottom {
+	height: 150px;
+}
+.animation-chart {
+	width: 100%;
+	height: 300px;
+}

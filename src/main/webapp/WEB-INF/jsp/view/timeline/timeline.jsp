@@ -2,7 +2,6 @@
 <spring:message code="title.hub.timeline" var="timelineTitle" />
 <template:basic htmlTitle="${timelineTitle}"
                 bodyTitle="${timelineTitle}">
-
     <c:choose>
         <c:when test="${connectionsEmpty}">
             No Connections

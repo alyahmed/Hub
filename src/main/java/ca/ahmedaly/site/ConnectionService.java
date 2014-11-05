@@ -19,6 +19,4 @@ public interface ConnectionService {
     
     public List<Connection<?>> findConnections(String providerId);
     
-    
-    
 }
