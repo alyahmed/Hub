@@ -19,6 +19,7 @@ public class RegistrationUtil {
                         .username(form.getUsername())
                         .firstName(form.getFirstName())
                         .lastName(form.getLastName())
+                        .email(form.getEmail())
                         .accountNonExpired(true)
                         .accountNonLocked(true)
                         .credentialsNonExpired(true)

@@ -40,7 +40,7 @@ public class SignUpControllerTest {
     public void getSignUpForm_shouldAddNewSignUpFormToViewModel() throws Exception {
         mockMvc.perform(get("/signup"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/signUpForm"))
+                .andExpect(view().name("/register"))
                 .andExpect(model().attribute("signUpForm", Matchers.hasProperty("username")))
                 .andDo(MockMvcResultHandlers.print());
     }

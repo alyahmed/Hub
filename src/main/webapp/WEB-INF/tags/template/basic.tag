@@ -4,7 +4,10 @@
 <%@ attribute name="bodyTitle" type="java.lang.String"
               rtexprvalue="true" required="true"%>
 <%@ include file="/WEB-INF/jsp/base.jspf"%>
+<%@ attribute name="pageCss" required="false" %>
+<%@ attribute name="pageJs" required="false" %>
 <template:main htmlTitle="${htmlTitle}" bodyTitle="${bodyTitle}">
+
     <jsp:attribute name="header">
         <!-- SITE URLS -->
         <spring:message code="header.user.profile" var="userProfile" ></spring:message>
@@ -38,6 +41,7 @@
         <c:url var="profilePictureUrl" value="/resource/img/user4.jpg" /> 
         <c:url var="settingsUrl" value="/user/settings" />
         <c:url var="logoUrl" value="/resource/img/logo.png" />
+
         <!-- END OF SITE URLS -->
         <!-- Header Start -->
         <a href="${homeUrl}" class="logo">
@@ -106,13 +110,13 @@
                 <div class="nav_icons">
                     <ul class="sidebar_threeicons">
                         <li>
-                            <a href="form_builder.html">
-                                <i class="livicon" data-name="hammer" title="Form Builder 1" data-loop="true" data-color="#42aaca" data-hc="#42aaca" data-s="25"></i>
+                            <a href="${settingsUrl}">
+                                <i class="livicon" data-name="user" title="Form Builder 1" data-loop="true" data-color="#42aaca" data-hc="#42aaca" data-s="25"></i>
                             </a>
                         </li>
                         <li>
-                            <a href="form_builder2.html">
-                                <i class="livicon" data-name="list-ul" title="Form Builder 2" data-loop="true" data-color="#e9573f" data-hc="#e9573f" data-s="25"></i>
+                            <a href="${profileUrl}">
+                                <i class="livicon" data-name="settings" title="Form Builder 2" data-loop="true" data-color="#e9573f" data-hc="#e9573f" data-s="25"></i>
                             </a>
                         </li>
                         <li>

@@ -27,7 +27,7 @@ import java.util.Set;
 
 @Entity
 @Table(uniqueConstraints = {
-        @UniqueConstraint(name = "UserPrincipal_Username", columnNames = "Username")
+    @UniqueConstraint(name = "UserPrincipal_Username", columnNames = "Username")
 })
 @XmlAccessorType(XmlAccessType.NONE)
 @JsonAutoDetect(creatorVisibility = JsonAutoDetect.Visibility.NONE,
@@ -35,257 +35,252 @@ import java.util.Set;
         getterVisibility = JsonAutoDetect.Visibility.NONE,
         isGetterVisibility = JsonAutoDetect.Visibility.NONE,
         setterVisibility = JsonAutoDetect.Visibility.NONE)
-public class UserPrincipal implements UserDetails, CredentialsContainer, Cloneable
-{
+public class UserPrincipal implements UserDetails, CredentialsContainer, Cloneable {
+
     private static final long serialVersionUID = 1L;
 
     private long id;
     private String username;
     private byte[] hashedPassword;
-    
+
     //Personal Info
     private String firstName;
-    
+
     private String lastName;
-    
+
+    private String email;
+
     //Authorization Details
     private Set<UserAuthority> authorities = new HashSet<>();
-    
-    
+
     //Security Details
     private boolean accountNonExpired;
     private boolean accountNonLocked;
     private boolean credentialsNonExpired;
     private boolean enabled;
-    
-    
+
     @Id
     @Column(name = "UserId")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @XmlElement @JsonProperty
-    public long getId()
-    {
+    @XmlElement
+    @JsonProperty
+    public long getId() {
         return this.id;
     }
 
-    public void setId(long id)
-    {
+    public void setId(long id) {
         this.id = id;
     }
 
     @Override
-    @XmlElement @JsonProperty
-    public String getUsername()
-    {
+    @XmlElement
+    @JsonProperty
+    public String getUsername() {
         return this.username;
     }
 
-    public void setUsername(String username)
-    {
+    public void setUsername(String username) {
         this.username = username;
     }
 
     @Basic(fetch = FetchType.LAZY)
     @Column(name = "HashedPassword")
-    public byte[] getHashedPassword()
-    {
+    public byte[] getHashedPassword() {
         return this.hashedPassword;
     }
 
-    public void setHashedPassword(byte[] password)
-    {
+    public void setHashedPassword(byte[] password) {
         this.hashedPassword = password;
     }
 
     @Transient
     @Override
-    public String getPassword()
-    {
-        return this.getHashedPassword() == null ? null :
-                new String(this.getHashedPassword(), StandardCharsets.UTF_8);
+    public String getPassword() {
+        return this.getHashedPassword() == null ? null
+                : new String(this.getHashedPassword(), StandardCharsets.UTF_8);
     }
-    
-    
+
     @Column(name = "first_name")
     @Basic
     public String getFirstName() {
-		return firstName;
-	}
+        return firstName;
+    }
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-	
-	@Column(name = "last_name")
-	@Basic
-	public String getLastName() {
-		return lastName;
-	}
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-    
-    
+    @Column(name = "last_name")
+    @Basic
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    @Column(name = "email")
+    @Basic
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     @Override
-    public void eraseCredentials()
-    {
+    public void eraseCredentials() {
         this.hashedPassword = null;
     }
 
     @Override
     @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "UserPrincipal_Authority", joinColumns = {
-            @JoinColumn(name = "UserId", referencedColumnName = "UserId")
+        @JoinColumn(name = "UserId", referencedColumnName = "UserId")
     })
-    public Set<UserAuthority> getAuthorities()
-    {
+    public Set<UserAuthority> getAuthorities() {
         return this.authorities;
     }
 
-    public void setAuthorities(Set<UserAuthority> authorities)
-    {
+    public void setAuthorities(Set<UserAuthority> authorities) {
         this.authorities = authorities;
     }
 
-	@Override
-    @XmlElement @JsonProperty
-    public boolean isAccountNonExpired()
-    {
+    @Override
+    @XmlElement
+    @JsonProperty
+    public boolean isAccountNonExpired() {
         return this.accountNonExpired;
     }
 
-    public void setAccountNonExpired(boolean accountNonExpired)
-    {
+    public void setAccountNonExpired(boolean accountNonExpired) {
         this.accountNonExpired = accountNonExpired;
     }
 
     @Override
-    @XmlElement @JsonProperty
-    public boolean isAccountNonLocked()
-    {
+    @XmlElement
+    @JsonProperty
+    public boolean isAccountNonLocked() {
         return this.accountNonLocked;
     }
 
-    public void setAccountNonLocked(boolean accountNonLocked)
-    {
+    public void setAccountNonLocked(boolean accountNonLocked) {
         this.accountNonLocked = accountNonLocked;
     }
 
     @Override
-    public boolean isCredentialsNonExpired()
-    {
+    public boolean isCredentialsNonExpired() {
         return this.credentialsNonExpired;
     }
 
-    public void setCredentialsNonExpired(boolean credentialsNonExpired)
-    {
+    public void setCredentialsNonExpired(boolean credentialsNonExpired) {
         this.credentialsNonExpired = credentialsNonExpired;
     }
 
     @Override
-    @XmlElement @JsonProperty
-    public boolean isEnabled()
-    {
+    @XmlElement
+    @JsonProperty
+    public boolean isEnabled() {
         return this.enabled;
     }
 
-    public void setEnabled(boolean enabled)
-    {
+    public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         return this.username.hashCode();
     }
 
     @Override
-    public boolean equals(Object other)
-    {
-        return other instanceof UserPrincipal &&
-                ((UserPrincipal)other).id == this.id;
+    public boolean equals(Object other) {
+        return other instanceof UserPrincipal
+                && ((UserPrincipal) other).id == this.id;
     }
 
     @Override
     @SuppressWarnings("CloneDoesntDeclareCloneNotSupportedException")
-    protected UserPrincipal clone()
-    {
+    protected UserPrincipal clone() {
         try {
-            return (UserPrincipal)super.clone();
+            return (UserPrincipal) super.clone();
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException(e); // not possible
         }
     }
 
     @Override
-    public String toString()    
-    {
+    public String toString() {
         return this.username;
     }
-    
-    public static Builder getBuilder(){
+
+    public static Builder getBuilder() {
         return new Builder();
     }
-    
-    
+
     public static class Builder {
-        
+
         private UserPrincipal user;
-        
-        public Builder(){
+
+        public Builder() {
             user = new UserPrincipal();
         }
-        
-        public Builder username(String username){
+
+        public Builder username(String username) {
             user.username = username;
             return this;
         }
-        
-        public Builder hashedPassword(byte[] hashedPassword){
+
+        public Builder hashedPassword(byte[] hashedPassword) {
             user.hashedPassword = hashedPassword;
             return this;
         }
-        
-        public Builder authorities(Set<UserAuthority> authorities){
+
+        public Builder authorities(Set<UserAuthority> authorities) {
             user.authorities = authorities;
             return this;
         }
-        
-        public Builder firstName(String firstName){
+
+        public Builder firstName(String firstName) {
             user.firstName = firstName;
             return this;
         }
         
-        public Builder lastName(String lastName){
+        public  Builder email(String email){
+            user.email = email;
+            return this;
+        }
+
+        public Builder lastName(String lastName) {
             user.lastName = lastName;
             return this;
         }
-        
-        public Builder accountNonExpired(boolean accountNonExpired){
+
+        public Builder accountNonExpired(boolean accountNonExpired) {
             user.accountNonExpired = accountNonExpired;
             return this;
         }
-        
-        public Builder accountNonLocked(boolean accountNonLocked){
+
+        public Builder accountNonLocked(boolean accountNonLocked) {
             user.accountNonLocked = accountNonLocked;
             return this;
         }
-        
-        public Builder credentialsNonExpired(boolean credentialsNonExpired){
+
+        public Builder credentialsNonExpired(boolean credentialsNonExpired) {
             user.credentialsNonExpired = credentialsNonExpired;
             return this;
         }
-        
-        public Builder enabled(boolean enabled){
+
+        public Builder enabled(boolean enabled) {
             user.enabled = enabled;
             return this;
         }
-        
-        public UserPrincipal build(){
+
+        public UserPrincipal build() {
             return user;
         }
-        
+
     }
 }

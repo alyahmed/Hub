@@ -55,7 +55,7 @@
             <a href="#toforgot">
                 <button type="button" class="btn btn-responsive botton-alignment btn-warning btn-sm">Forgot password</button>
             </a>
-            <a href="#toregister">
+            <a href="${signUpUrl}">
                 <button type="button" class="btn btn-responsive botton-alignment btn-success btn-sm" style="float:right;">Sign up</button>
             </a>
         </p>

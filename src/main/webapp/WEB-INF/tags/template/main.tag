@@ -32,8 +32,11 @@
         <link rel="stylesheet" href="<c:url value="/resource/css/panel.css" />" />
         <link rel="stylesheet" href="<c:url value="/resource/css/metisMenu.css" />" />    
         <link rel="stylesheet" href="<c:url value="/resource/css/only_dashboard.css" />" />   
-        <!-- end of global css -->    
+        <!-- end of global css -->  
+        <link rel="stylesheet" href="<c:url value="/resource/css/pages/timeline.css" />" />    
+        <link rel="stylesheet" href="<c:url value="/resource/css/pages/timeline2.css" />" /> 
         <!--page level css -->
+
         <jsp:invoke fragment="pageStyleResources" />
         <!--end of page level css-->
 

@@ -39,21 +39,21 @@ public class SignUpController {
     @RequestMapping(value = {"/signup"}, method = RequestMethod.GET)
     public ModelAndView showSignUpForm(WebRequest request, Map<String, Object> model) {
         model.put("signUpForm", new SignUpForm());
-        return new ModelAndView("/signUpForm", model);
+        return new ModelAndView("/register", model);
     }
 
     @RequestMapping(value = {"/signup"}, method = RequestMethod.POST)
-    public ModelAndView registerUser(@Valid @ModelAttribute("signUpForm") SignUpForm signUpForm,
+    public String registerUser(@Valid @ModelAttribute("signUpForm") SignUpForm signUpForm,
             BindingResult result,
             WebRequest request) {
 
         if (SecurityContextHolder.getContext().getAuthentication() instanceof UserPrincipal) {
-            return new ModelAndView(new RedirectView("/connect", true, false));
+            return "connect/status";
         }
 
         if (result.hasErrors()) {
             log.info("Errors in result: " + result);
-            return new ModelAndView("/signup");
+            return "/register";
         }
 
         UserPrincipal user = RegistrationUtil.createUser(signUpForm);
@@ -61,7 +61,7 @@ public class SignUpController {
         log.info("POST /signup --------- processing user: " + user);
         if (user == null) {
             log.debug("User is null: " + user);
-            return new ModelAndView("/signup");
+            return "/register";
         }
 
         userService.saveUserAndAuthenticate(user, signUpForm.getPassword());
@@ -69,7 +69,7 @@ public class SignUpController {
         log.info("Saving User: " + user);
         log.info("Current Authentication: " + SecurityContextHolder.getContext().getAuthentication());
         log.info("Allowing user into the application");
-        return new ModelAndView("/connect");
+        return "connect/status";
 
     }
 

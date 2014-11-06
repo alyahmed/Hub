@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>ca.ahmedaly</groupId>
     <artifactId>HubSocial</artifactId>
-    <version>5.0.7-SNAPSHOT</version>
+    <version>6.0.7-SNAPSHOT</version>
     <packaging>war</packaging>
     <description> 
         Hub Social is a single content 
